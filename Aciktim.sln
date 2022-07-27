@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32616.157
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aciktim", "Aciktim\Aciktim.csproj", "{7DD7244B-F2F6-4EE8-BD18-09D4D113D28C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7DD7244B-F2F6-4EE8-BD18-09D4D113D28C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DD7244B-F2F6-4EE8-BD18-09D4D113D28C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DD7244B-F2F6-4EE8-BD18-09D4D113D28C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DD7244B-F2F6-4EE8-BD18-09D4D113D28C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F172E772-0AD1-48C6-B340-969ACC74424B}
+	EndGlobalSection
+EndGlobal

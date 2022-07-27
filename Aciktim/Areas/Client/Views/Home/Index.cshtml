@@ -1,0 +1,27 @@
+﻿@using Aciktim.Models
+@model List<Restaurant>
+@{
+    Layout = "_Layout";
+}
+
+<div class="container-fluid pt-4 px-4">
+    <div class="col-12">
+        <div class="bg-secondary rounded h-100 p-4">
+            <h6 class="mb-4">Restorantlar</h6>
+            <dl class="row mb-0">
+                @foreach (Restaurant r in Model)
+                {
+                    if (r.Image == null)
+                    {
+                        <dt class="col-sm-4"><img class="img-fluid mx-auto mb-4" src="~/img/default.jpg" style="height: 100px;"></dt>
+                    }
+                    else
+                    {
+                        <dt class="col-sm-4">>@r.Image</dt>
+                    }
+                    <dd class="col-sm-8">@r.RestaurantName</dd>
+                }
+            </dl>
+        </div>
+    </div>
+</div>
