@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -45,13 +46,36 @@ namespace Aciktim.Models
         public virtual DbSet<Role> Roles { get; set; } = null!;
         public virtual DbSet<State> States { get; set; } = null!;
         public virtual DbSet<Street> Streets { get; set; } = null!;
+        public virtual DbSet<GetAddress> FullAddress { get; set; }
+        public virtual DbSet<OrderPrice> OrderPrices { get; set; }
+
+        public IQueryable<GetAddress> GetRestaurantFullAddress(int id)
+        {
+            SqlParameter pId = new SqlParameter("@id", id);
+            return FullAddress.FromSqlRaw("EXECUTE GetRestaurantAddress @id", pId);
+        }
+        public IQueryable<GetAddress> GetClientFullAddress(int id)
+        {
+            SqlParameter pId = new SqlParameter("@id", id);
+            return FullAddress.FromSqlRaw("EXECUTE GetClientAddress @id", pId);
+        }
+        public IQueryable<GetAddress> GetOrderFullAddress(int id)
+        {
+            SqlParameter pId = new SqlParameter("@id", id);
+            return FullAddress.FromSqlRaw("EXECUTE GetOrderAddress @id", pId);
+        }
+        public IQueryable<OrderPrice> GetPriceOrder(int id)
+        {
+            SqlParameter pId = new SqlParameter("@id", id);
+            return OrderPrices.FromSqlRaw("EXECUTE GetPriceOrder @id", pId);
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=Aciktim;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+                optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Database=Aciktim;Trusted_Connection=True;");
             }
         }
 
@@ -67,37 +91,43 @@ namespace Aciktim.Models
                     .WithMany(p => p.Addresses)
                     .HasForeignKey(d => d.ApartmentId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Address__Apartme__0F624AF8");
+                    .HasConstraintName("FK__Address__Apartme__41EDCAC5");
 
                 entity.HasOne(d => d.ApartmentNumber)
                     .WithMany(p => p.Addresses)
                     .HasForeignKey(d => d.ApartmentNumberId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Address__Apartme__10566F31");
+                    .HasConstraintName("FK__Address__Apartme__42E1EEFE");
 
                 entity.HasOne(d => d.City)
                     .WithMany(p => p.Addresses)
                     .HasForeignKey(d => d.CityId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Address__CityId__0C85DE4D");
+                    .HasConstraintName("FK__Address__CityId__3F115E1A");
 
                 entity.HasOne(d => d.Country)
                     .WithMany(p => p.Addresses)
                     .HasForeignKey(d => d.CountryId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Address__Country__0B91BA14");
+                    .HasConstraintName("FK__Address__Country__3E1D39E1");
 
                 entity.HasOne(d => d.Neighbourhood)
                     .WithMany(p => p.Addresses)
                     .HasForeignKey(d => d.NeighbourhoodId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Address__Neighbo__0E6E26BF");
+                    .HasConstraintName("FK__Address__Neighbo__40F9A68C");
+
+                entity.HasOne(d => d.State)
+                    .WithMany(p => p.Addresses)
+                    .HasForeignKey(d => d.StateId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Address__StateId__498EEC8D");
 
                 entity.HasOne(d => d.Street)
                     .WithMany(p => p.Addresses)
                     .HasForeignKey(d => d.StreetId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Address__StreetI__0D7A0286");
+                    .HasConstraintName("FK__Address__StreetI__40058253");
             });
 
             modelBuilder.Entity<Apartment>(entity =>
@@ -205,7 +235,7 @@ namespace Aciktim.Models
                     .WithMany(p => p.Carriers)
                     .HasForeignKey(d => d.AddressId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Carrier__Address__08B54D69");
+                    .HasConstraintName("FK__Carrier__Address__45BE5BA9");
 
                 entity.HasOne(d => d.Role)
                     .WithMany(p => p.Carriers)
@@ -304,7 +334,7 @@ namespace Aciktim.Models
                     .WithMany(p => p.ClientAddresses)
                     .HasForeignKey(d => d.AddressId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__ClientAdd__Addre__09A971A2");
+                    .HasConstraintName("FK__ClientAdd__Addre__46B27FE2");
 
                 entity.HasOne(d => d.Client)
                     .WithMany(p => p.ClientAddresses)
@@ -429,7 +459,7 @@ namespace Aciktim.Models
                     .WithMany(p => p.Orders)
                     .HasForeignKey(d => d.AddressId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Order__AddressId__0A9D95DB");
+                    .HasConstraintName("FK__Order__AddressId__43D61337");
 
                 entity.HasOne(d => d.Client)
                     .WithMany(p => p.Orders)
@@ -549,7 +579,7 @@ namespace Aciktim.Models
                     .WithMany(p => p.Restaurants)
                     .HasForeignKey(d => d.AddressId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Restauran__Addre__114A936A");
+                    .HasConstraintName("FK__Restauran__Addre__44CA3770");
 
                 entity.HasOne(d => d.Image)
                     .WithMany(p => p.Restaurants)

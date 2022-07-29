@@ -1,31 +1,76 @@
-﻿@{
+﻿@using Aciktim.Models
+@model dynamic
+@{
+    Layout = "_Layout";
 }
-@await Html.PartialAsync("_CssPartial")
-<div class="col-sm col-xl">
+<div class="col-sm col-xl pt-4 px-4">
     <div class="bg-secondary rounded h-100 p-4">
-        <h6 class="mb-4">Pills Navs &amp; Tabs</h6>
+        <h6 class="mb-4">@Model.Restaurant.RestaurantName</h6>
         <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="false">Home</button>
+                <button class="nav-link active" id="pills-menu-tab" data-bs-toggle="pill" data-bs-target="#pills-menu" type="button" role="tab" aria-controls="pills-menu" aria-selected="true">Menü</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Profile</button>
+                <button class="nav-link" id="pills-comment-tab" data-bs-toggle="pill" data-bs-target="#pills-comment" type="button" role="tab" aria-controls="pills-comment" aria-selected="false">Yorumlar</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="true">Contact</button>
+                <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Hakkında</button>
             </li>
         </ul>
         <div class="tab-content" id="pills-tabContent">
-            <div class="tab-pane fade" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-                Sit sanctus et stet dolor kasd kasd takimata. Dolor stet dolores nonumy et dolor et eos lorem et, diam ipsum nonumy elitr sanctus dolores voluptua sit dolor, at et et amet nonumy elitr ea et ipsum. Elitr lorem et dolore invidunt eirmod voluptua lorem sed. Sed eirmod sadipscing eos tempor.
+            <div class="tab-pane fade active show" id="pills-menu" role="tabpanel" aria-labelledby="pills-menu-tab">
+                @foreach (Product p in Model.Product)
+                {
+                    <div class="col-sm col-xl">
+                        <h6 class="mb-4 mt-4">@p.ProductName</h6>
+                        <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+                            <div class="btn-group" role="group">
+                                @if (p.Image == null)
+                                {
+                                    <img class="img-fluid mx-auto mb-4" src="~/img/default.jpg" style="height: 100px;">
+                                }
+                                else
+                                {
+                                    <span>@p.Image</span>
+                                }
+                            </div>
+                            <div class="ms-3">
+                                <p class="mb-2">@p.Price.ToString("0.00")</p>
+                                <button type="button" class="btn btn-outline-info m-2">Ekle</button>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="dropdown-divider">
+                }
             </div>
-            <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
-                Invidunt rebum voluptua lorem eirmod dolore. Amet no sed sanctus lorem ea. Nonumy sit stet sit magna. Rebum rebum ipsum clita erat consetetur, sit dolor sit clita et amet. Est et clita dolore takimata, sea dolores tempor erat consetetur lorem. Consetetur sea sadipscing dolor et dolores et stet, tempor elitr.
+            <div class="tab-pane fade" id="pills-comment" role="tabpanel" aria-labelledby="pills-comment-tab">
+                @foreach (Comment c in Model.Comment)
+                {
+                    <div class="col-sm col-xl">
+                        <h6 class="mb-4 mt-4">@c.Client.ClientName </h6>
+                        <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+                            <div class="btn-group" role="group">
+                                <p>@c.Text</p>
+                            </div>
+                            <div class="ms-3">
+                                <p class="mb-2">@c.Date</p>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="dropdown-divider">
+                }
             </div>
-            <div class="tab-pane fade active show" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
-                Et diam et est sed vero ipsum voluptua dolor et, sit eos justo ipsum no ipsum amet sed aliquyam dolore, ut ipsum sanctus et consetetur. Sit ea sit clita lorem ea gubergren. Et dolore vero sanctus voluptua ipsum sadipscing amet at. Et sed dolore voluptua dolor eos tempor, erat amet.
+            <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+                <h1 class="display-6 mb-4 mt-2">@Model.Restaurant.RestaurantName</h1>
+                <p class="h4">İletişim</p>
+                <p>Telefon Numarası: <ins>@Model.Restaurant.Phone</ins></p>
+                <p>E-mail adresi: <ins>@Model.Restaurant.EMail</ins></p>
+                @foreach (GetAddress a in Model.Address)
+                {
+
+                    <p>Restorant adresi: <ins>@a.Country @a.City @a.State @a.Neighbourhood mah. @a.Street sk. @a.Apartment apt No:@a.No</ins></p>
+                }
             </div>
         </div>
     </div>
 </div>
-@await Html.PartialAsync("_JsPartial")

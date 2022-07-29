@@ -1,0 +1,43 @@
+﻿@using Aciktim.Models
+@model dynamic
+@{
+    Layout = "_Layout";
+    AciktimContext _context = new AciktimContext();
+}
+
+<div class="col-sm col-xl pt-4 px-4">
+    <div class="bg-secondary rounded h-100 p-4">
+        <h6 class="mb-4">Siparişlerim</h6>
+        <table class="table table-borderless">
+            <thead>
+                <tr>
+                    <th scope="col">Tarih</th>
+                    <th scope="col">Adres</th>
+                    <th scope="col">Restorant</th>
+                    <th scope="col">Ücret</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Order o in Model.Order)
+                {
+                    <tr>
+                        <td>@o.Date</td>
+                        <td>
+                            @foreach(GetAddress a in _context.GetOrderFullAddress(o.OrderId)){
+                                <span>@a.Country @a.City @a.State @a.Neighbourhood mah. @a.Street sk. @a.Apartment apt No:@a.No</span>
+                            }
+
+                        </td>
+                        <td>@o.Restaurant.RestaurantName</td>
+                        <td>
+                            @foreach(OrderPrice op in _context.GetPriceOrder(o.OrderId)){
+                                <span>@op.Price.ToString("0.00") &#8378;</span>
+                            }
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

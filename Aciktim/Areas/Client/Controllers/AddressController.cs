@@ -3,16 +3,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Aciktim.Areas.Client.Controllers
 {
-    public class HomeController : Controller
+    public class AddressController : Controller
     {
         AciktimContext _context = new AciktimContext();
         [Area("Client")]
-
         public IActionResult Index()
         {
-            List<Restaurant> restaurants = _context.Restaurants.ToList();
-            return View(restaurants);
+            List<GetAddress> addresses = _context.GetClientFullAddress(1).ToList();
+            return View(addresses);
         }
-
     }
 }

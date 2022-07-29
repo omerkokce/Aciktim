@@ -1,0 +1,37 @@
+﻿@using Aciktim.Models
+@model List<Card>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "_Layout";
+}
+
+<div class="col-sm col-xl pt-4 px-4">
+    <div class="bg-secondary rounded h-100 p-4">
+        <h6 class="mb-4">Kartlarım</h6>
+        <table class="table table-borderless">
+            <thead>
+                <tr>
+                    <th scope="col">Kart Numarası</th>
+                    <th scope="col">Son Kullanma Tarihi</th>
+                    <th scope="col">Cvv</th>
+                    <th scope="col">Sil</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Card c in Model)
+                {
+                    <tr>
+                        <td>@c.CardNumber</td>
+                        <td>@c.ExprationDate</td>
+                        <td>@c.Cvv</td>
+                        <td><button type="button" class="btn btn-outline-danger">Sil</button></td>
+                    </tr>
+                }
+
+                <tr>
+                    <td rowspan="4"><button type="button" class="btn btn-sm btn-outline-success m-2">Yeni Kart Ekle</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,46 @@
+﻿@using Aciktim.Models
+@model List<GetAddress>
+@{
+    Layout = "_Layout";
+}
+
+<div class="col-sm col-xl pt-4 px-4">
+    <div class="bg-secondary rounded h-100 p-4">
+        <h6 class="mb-4">Kartlarım</h6>
+        <table class="table table-borderless">
+            <thead>
+                <tr>
+                    <th>Adres Başlığı</th>
+                    <th>Ülke</th>
+                    <th>Şehir</th>
+                    <th>İlçe</th>
+                    <th>Mahalle</th>
+                    <th>Sokak</th>
+                    <th>Apartman</th>
+                    <th>Daire</th>
+                    <th>Sil</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (GetAddress a in Model)
+                {
+                    <tr>
+                        <td>@a.AddressName</td>
+                        <td>@a.Country</td>
+                        <td>@a.City</td>
+                        <td>@a.State</td>
+                        <td>@a.Neighbourhood</td>
+                        <td>@a.Street</td>
+                        <td>@a.Apartment</td>
+                        <td>@a.No</td>
+                        <td><button type="button" class="btn btn-outline-danger">Sil</button></td>
+                    </tr>
+                }
+
+                <tr>
+                    <td rowspan="4"><button type="button" class="btn btn-sm btn-outline-success m-2">Yeni Adres Ekle</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -7,6 +7,7 @@ namespace Aciktim.Models
     {
         public State()
         {
+            Addresses = new HashSet<Address>();
             Neighbourhoods = new HashSet<Neighbourhood>();
         }
 
@@ -15,6 +16,7 @@ namespace Aciktim.Models
         public int CityId { get; set; }
 
         public virtual City City { get; set; } = null!;
+        public virtual ICollection<Address> Addresses { get; set; }
         public virtual ICollection<Neighbourhood> Neighbourhoods { get; set; }
     }
 }
