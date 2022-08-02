@@ -7,7 +7,7 @@ namespace Aciktim.Models
     {
         public Client()
         {
-            Baskets = new HashSet<Basket>();
+            Baskets = new HashSet<BasketProduct>();
             Cards = new HashSet<Card>();
             ClientAddresses = new HashSet<ClientAddress>();
             ClientFavorites = new HashSet<ClientFavorite>();
@@ -23,7 +23,7 @@ namespace Aciktim.Models
         public int RoleId { get; set; }
 
         public virtual Role Role { get; set; } = null!;
-        public virtual ICollection<Basket> Baskets { get; set; }
+        public virtual ICollection<BasketProduct> Baskets { get; set; }
         public virtual ICollection<Card> Cards { get; set; }
         public virtual ICollection<ClientAddress> ClientAddresses { get; set; }
         public virtual ICollection<ClientFavorite> ClientFavorites { get; set; }

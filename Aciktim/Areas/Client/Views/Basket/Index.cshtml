@@ -1,0 +1,43 @@
+﻿@using Aciktim.Models
+@model List<Product>
+@{
+    Layout = "_Layout";
+
+    decimal prices = 0;
+}
+<div class="col-sm col-xl pt-4 px-4">
+    <div class="bg-secondary rounded h-100 p-4">
+        @if(Model.Count == 0)
+        {
+            <h6>Biraz kilo mu verdin? Bir şeyler yesen iyi olacak.</h6>
+        }
+        @foreach (Product p in Model)
+        {
+            <div class="col-sm col-xl">
+                <h6 class="mb-4 mt-4">@p.ProductName</h6>
+                <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+                    <div class="btn-group" role="group">
+                        @if (p.Image == null)
+                        {
+                            <img class="img-fluid mx-auto mb-4" src="~/img/default.jpg" style="height: 100px;">
+                        }
+                        else
+                        {
+                            <span>@p.Image</span>
+                        }
+                        <p class="m-4">
+                            @p.Content
+                        </p>
+                    </div>
+                    <div class="ms-3">
+                        <p class="mb-2">@p.Price.ToString("0.00") &#8378;</p>
+                        <a href="/Client/Basket/Delete/@p.ProductId" class="btn btn-outline-danger m-2 btnSil" data-pId="@p.ProductId">Sil</a>
+                    </div>
+                </div>
+            </div>
+            <hr class="dropdown-divider">
+            prices += p.Price;
+        }
+        <a href="/Client/Payment/Index/@Convert.ToDouble(prices)" class="btn btn-outline-light m-2 btn-lg">Ödeme Yap @prices.ToString("0.00") &#8378;</a>
+    </div>
+</div>

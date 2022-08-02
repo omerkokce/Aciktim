@@ -5,33 +5,83 @@
     Layout = "_Layout";
 }
 
-<div class="col-sm col-xl pt-4 px-4">
-    <div class="bg-secondary rounded h-100 p-4">
-        <h6 class="mb-4">Kartlarım</h6>
-        <table class="table table-borderless">
-            <thead>
-                <tr>
-                    <th scope="col">Kart Numarası</th>
-                    <th scope="col">Son Kullanma Tarihi</th>
-                    <th scope="col">Cvv</th>
-                    <th scope="col">Sil</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (Card c in Model)
+@section body{
+    <div class="modal fade small-model" id="small-modal" tabindex="-1" role="dialog" aria-labelledby="small-model-label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content bg-secondary rounded h-100 p-4" data-border-top="multi">
+                <div class="model-header" style="display:flex;">
+                    <h6 class="mb-4">Yeni Kart Ekle</h6>
+                    <button type="button" class="btn btn-sm btn-sm-square btn-outline-primary" style="margin:-.5rem -.5rem -.5rem auto;" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="/Client/Card/Add" method="post" role="form">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="cardNumber" name="CardNumber" placeholder="xxxx xxxx xxxx xxxx" maxlength="16">
+                            <label for="floatingInput">Kart Numarası</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="date" class="form-control" placeholder="xx/xx" name="ExprationDate" />
+                            <label for="floatingInput">Son Kullanma Tarihi</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="cardNumber" placeholder="1111 2222 3333 4444" name="Cvv" maxlength="3">
+                            <label for="floatingInput">CVV</label>
+                        </div>
+                        <input hidden type="text" name="ClientId" value="1" />
+                        <button type="submit" class="btn btn-sm btn-outline-success addCard">Ekle</button>
+                        <button type="button" class="btn btn-sm btn-outline-danger m-2" data-bs-dismiss="modal">İptal</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+    <div class="col-sm col-xl pt-4 px-4">
+        <div class="bg-secondary rounded h-100 p-4">
+            <h6 class="mb-4">Kartlarım</h6>
+            <table class="table table-borderless">
+                <thead>
+                    <tr>
+                        <th scope="col">Kart Numarası</th>
+                        <th scope="col">Son Kullanma Tarihi</th>
+                        <th scope="col">Cvv</th>
+                        <th scope="col">Sil</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (Card c in Model)
                 {
                     <tr>
                         <td>@c.CardNumber</td>
                         <td>@c.ExprationDate</td>
                         <td>@c.Cvv</td>
-                        <td><button type="button" class="btn btn-outline-danger">Sil</button></td>
+                        <td><a href="/Client/Card/Delete/@c.CardId" class="btn btn-outline-danger">Sil</a></td>
                     </tr>
                 }
 
                 <tr>
-                    <td rowspan="4"><button type="button" class="btn btn-sm btn-outline-success m-2">Yeni Kart Ekle</button></td>
+                    <td rowspan="4">
+                        <button type="button" class="btn btn-sm btn-outline-success m-2 openModal" data-toggle="modal" data-target="#small-modal">Yeni Kart Ekle</button>
+                    </td>
                 </tr>
             </tbody>
         </table>
     </div>
 </div>
+
+
+@section scripts{
+
+    <script src="~/Content/assets/js/required/jquery-1.11.1.min.js"></script>
+
+    <script>
+        $(".openModal").click(function() {
+            $("#small-modal").modal("show");
+        });
+    </script>
+}

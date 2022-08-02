@@ -1,28 +1,77 @@
 ﻿@using Aciktim.Models
-@model List<GetAddress>
+@model dynamic
 @{
     Layout = "_Layout";
 }
 
-<div class="col-sm col-xl pt-4 px-4">
-    <div class="bg-secondary rounded h-100 p-4">
-        <h6 class="mb-4">Kartlarım</h6>
-        <table class="table table-borderless">
-            <thead>
-                <tr>
-                    <th>Adres Başlığı</th>
-                    <th>Ülke</th>
-                    <th>Şehir</th>
-                    <th>İlçe</th>
-                    <th>Mahalle</th>
-                    <th>Sokak</th>
-                    <th>Apartman</th>
-                    <th>Daire</th>
-                    <th>Sil</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (GetAddress a in Model)
+@section body{
+    <div class="modal fade small-model" id="small-modal" tabindex="-1" role="dialog" aria-labelledby="small-model-label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content bg-secondary rounded h-100 p-4" data-border-top="multi">
+                <div class="model-header" style="display:flex;">
+                    <h6 class="mb-4">Yeni Adres Ekle</h6>
+                    <button type="button" class="btn btn-sm btn-sm-square btn-outline-primary" style="margin:-.5rem -.5rem -.5rem auto;" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="/Client/Address/Add" method="post" role="form">
+                        <select class="form-select form-select-sm mb-3" id="country" aria-label=".form-select-sm example">
+                            <option selected="">Open this select menu</option>
+                            @foreach (Country c in Model.Country)
+                            {
+                                <option value="@c.CountryId">@c.Name</option>
+                            }
+                        </select>
+                        <select class="form-select form-select-sm mb-3" id="city" aria-label=".form-select-sm example">
+                            <option selected="">Open this select menu</option>
+                        </select>
+                        <select class="form-select form-select-sm mb-3" id="state" aria-label=".form-select-sm example">
+                            <option selected="">Open this select menu</option>
+                        </select>
+                        <select class="form-select form-select-sm mb-3" id="neighbourhood" aria-label=".form-select-sm example">
+                            <option selected="">Open this select menu</option>
+                        </select>
+                        <select class="form-select form-select-sm mb-3" id="street" aria-label=".form-select-sm example">
+                            <option selected="">Open this select menu</option>
+                        </select>
+                        <select class="form-select form-select-sm mb-3" id="apartment" aria-label=".form-select-sm example">
+                            <option selected="">Open this select menu</option>
+                        </select>
+                        <select class="form-select form-select-sm mb-3" id="apartmentno" aria-label=".form-select-sm example">
+                            <option selected="">Open this select menu</option>
+                        </select>
+                        <input hidden type="text" name="ClientId" value="1" />
+                        <button type="submit" class="btn btn-sm btn-outline-success addCard">Ekle</button>
+                        <button type="button" class="btn btn-sm btn-outline-danger m-2" data-bs-dismiss="modal">İptal</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+    <div class="col-sm col-xl pt-4 px-4">
+        <div class="bg-secondary rounded h-100 p-4">
+            <h6 class="mb-4">Kartlarım</h6>
+            <table class="table table-borderless">
+                <thead>
+                    <tr>
+                        <th>Adres Başlığı</th>
+                        <th>Ülke</th>
+                        <th>Şehir</th>
+                        <th>İlçe</th>
+                        <th>Mahalle</th>
+                        <th>Sokak</th>
+                        <th>Apartman</th>
+                        <th>Daire</th>
+                        <th>Sil</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (GetAddress a in Model.Address)
                 {
                     <tr>
                         <td>@a.AddressName</td>
@@ -38,9 +87,35 @@
                 }
 
                 <tr>
-                    <td rowspan="4"><button type="button" class="btn btn-sm btn-outline-success m-2">Yeni Adres Ekle</button></td>
+                    <td rowspan="4">
+                        <button type="button" class="btn btn-sm btn-outline-success m-2 openModal" data-toggle="modal" data-target="#small-modal">Yeni Adres Ekle</button>
+                    </td>
                 </tr>
             </tbody>
         </table>
     </div>
 </div>
+@section scripts{
+
+    <script src="~/Content/assets/js/required/jquery-1.11.1.min.js"></script>
+
+    <script>
+        $(".openModal").click(function() {
+            $("#small-modal").modal("show");
+        });
+
+        var sel1 = document.querySelector('#country');
+        var sel2 = document.querySelector('#city');
+        var options2 = sel2.querySelectorAll('option');
+
+        function giveSelection(selValue) {
+            sel2.innerHTML = '';
+            for (var i = 0; i < options2.length; i++) {
+                if (options2[i].dataset.option === selValue) {
+                    sel2.appendChild(options2[i]);
+                }
+            }
+        }
+
+    </script>
+}

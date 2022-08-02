@@ -2,14 +2,13 @@
 using Aciktim.Models;
 using System.Dynamic;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Data.SqlClient;
 
 namespace Aciktim.Areas.Client.Controllers
 {
+    [Area("Client")]
     public class RestaurantController : Controller
     {
         AciktimContext _context = new AciktimContext();
-        [Area("Client")]
         public IActionResult Index(int id)
         {
             dynamic myModel = new ExpandoObject();
@@ -18,6 +17,18 @@ namespace Aciktim.Areas.Client.Controllers
             myModel.Restaurant = _context.Restaurants.Where(r => r.RestaurantId == id).FirstOrDefault();
             myModel.Address = _context.GetRestaurantFullAddress(id).ToList();
             return View(myModel);
+        }
+
+        public void Add(int id)
+        {
+            Product p = _context.Products.FirstOrDefault(p => p.ProductId == id);
+            Models.Client c = _context.Clients.FirstOrDefault(c => c.ClientId == 1);
+
+            if (p != null && c != null)
+            {
+                _context.BasketProducts.Add(new BasketProduct { Product = p, Client = c });
+                _context.SaveChanges();
+            }
         }
     }
 }

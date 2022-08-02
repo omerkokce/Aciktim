@@ -35,8 +35,8 @@
                                 }
                             </div>
                             <div class="ms-3">
-                                <p class="mb-2">@p.Price.ToString("0.00")</p>
-                                <button type="button" class="btn btn-outline-info m-2">Ekle</button>
+                                <p class="mb-2">@p.Price.ToString("0.00") &#8378;</p>
+                                <a href="#" class="btn btn-outline-info m-2 btnEkle" data-pId="@p.ProductId">Ekle</a>
                             </div>
                         </div>
                     </div>
@@ -74,3 +74,21 @@
         </div>
     </div>
 </div>
+@section Scripts{
+    <script>
+        $(".btnEkle").click(function() {
+            var id = $(this).attr("data-pId");
+            $.ajax({
+                type: "POST",
+                url: "/Client/Restaurant/Add/" + id,
+                success: function(durum) {
+                    if (durum == "başarılı") {
+                        location.reload();
+                    }
+                },
+                error: function() {
+                }
+            });
+        })
+    </script>
+}

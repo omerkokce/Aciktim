@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Aciktim.Areas.Client.Controllers
 {
+    [Area("Client")]
     public class HomeController : Controller
     {
         AciktimContext _context = new AciktimContext();
-        [Area("Client")]
 
         public IActionResult Index()
         {

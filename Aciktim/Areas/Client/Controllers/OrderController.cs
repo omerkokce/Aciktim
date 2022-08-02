@@ -5,10 +5,10 @@ using System.Dynamic;
 
 namespace Aciktim.Areas.Client.Controllers
 {
+    [Area("Client")]
     public class OrderController : Controller
     {
         AciktimContext _context = new AciktimContext();
-        [Area("Client")]
         public IActionResult Index()
         {
             dynamic myModel = new ExpandoObject();

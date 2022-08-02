@@ -20,7 +20,6 @@ namespace Aciktim.Models
         public virtual DbSet<Address> Addresses { get; set; } = null!;
         public virtual DbSet<Apartment> Apartments { get; set; } = null!;
         public virtual DbSet<ApartmentNumber> ApartmentNumbers { get; set; } = null!;
-        public virtual DbSet<Basket> Baskets { get; set; } = null!;
         public virtual DbSet<BasketProduct> BasketProducts { get; set; } = null!;
         public virtual DbSet<Card> Cards { get; set; } = null!;
         public virtual DbSet<Carrier> Carriers { get; set; } = null!;
@@ -68,6 +67,11 @@ namespace Aciktim.Models
         {
             SqlParameter pId = new SqlParameter("@id", id);
             return OrderPrices.FromSqlRaw("EXECUTE GetPriceOrder @id", pId);
+        }
+        public IQueryable<Product> GetBasketProduct(int id)
+        {
+            SqlParameter pId = new SqlParameter("@id", id);
+            return Products.FromSqlRaw("EXECUTE GetBasketProduct @id", pId);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -156,17 +160,6 @@ namespace Aciktim.Models
                     .HasConstraintName("FK__Apartment__Apart__619B8048");
             });
 
-            modelBuilder.Entity<Basket>(entity =>
-            {
-                entity.ToTable("Basket");
-
-                entity.HasOne(d => d.Client)
-                    .WithMany(p => p.Baskets)
-                    .HasForeignKey(d => d.ClientId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Basket__ClientId__60A75C0F");
-            });
-
             modelBuilder.Entity<BasketProduct>(entity =>
             {
                 entity.HasKey(e => e.Bpid)
@@ -176,9 +169,9 @@ namespace Aciktim.Models
 
                 entity.Property(e => e.Bpid).HasColumnName("BPId");
 
-                entity.HasOne(d => d.Basket)
-                    .WithMany(p => p.BasketProducts)
-                    .HasForeignKey(d => d.BasketId)
+                entity.HasOne(d => d.Client)
+                    .WithMany(p => p.Baskets)
+                    .HasForeignKey(d => d.ClientId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__BasketPro__Baske__17036CC0");
 
