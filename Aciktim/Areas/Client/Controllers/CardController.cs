@@ -22,7 +22,7 @@ namespace Aciktim.Areas.Client.Controllers
             }
             catch (Exception e)
             {
-                throw e;
+                Console.WriteLine(e);
             }
 
             return RedirectToAction("Index");

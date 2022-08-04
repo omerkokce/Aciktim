@@ -19,7 +19,7 @@ namespace Aciktim.Areas.Client.Controllers
             return View(myModel);
         }
 
-        public void Add(int id)
+        public string Add(int id)
         {
             Product p = _context.Products.FirstOrDefault(p => p.ProductId == id);
             Models.Client c = _context.Clients.FirstOrDefault(c => c.ClientId == 1);
@@ -28,7 +28,9 @@ namespace Aciktim.Areas.Client.Controllers
             {
                 _context.BasketProducts.Add(new BasketProduct { Product = p, Client = c });
                 _context.SaveChanges();
+                return "success";
             }
+            return "fail";
         }
     }
 }

@@ -12,7 +12,9 @@ namespace Aciktim.Models
 
         public int CategoryId { get; set; }
         public string CategoryName { get; set; } = null!;
+        public int RestaurantId { get; set; }
 
+        public virtual Restaurant Restaurant { get; set; } = null!;
         public virtual ICollection<ProductCategory> ProductCategories { get; set; }
     }
 }

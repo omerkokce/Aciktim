@@ -10,7 +10,7 @@ namespace Aciktim.Areas.Client.Controllers
 
         public IActionResult Index()
         {
-            List<Restaurant> restaurants = _context.Restaurants.ToList();
+            List<Models.Restaurant> restaurants = _context.Restaurants.ToList();
             return View(restaurants);
         }
 

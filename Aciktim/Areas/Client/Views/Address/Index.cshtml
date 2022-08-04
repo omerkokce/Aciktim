@@ -1,5 +1,6 @@
 ﻿@using Aciktim.Models
 @model dynamic
+@addTagHelper*, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     Layout = "_Layout";
 }
@@ -15,33 +16,48 @@
                     </button>
                 </div>
                 <div class="modal-body">
+
                     <form action="/Client/Address/Add" method="post" role="form">
-                        <select class="form-select form-select-sm mb-3" id="country" aria-label=".form-select-sm example">
-                            <option selected="">Open this select menu</option>
-                            @foreach (Country c in Model.Country)
-                            {
-                                <option value="@c.CountryId">@c.Name</option>
-                            }
-                        </select>
-                        <select class="form-select form-select-sm mb-3" id="city" aria-label=".form-select-sm example">
-                            <option selected="">Open this select menu</option>
-                        </select>
-                        <select class="form-select form-select-sm mb-3" id="state" aria-label=".form-select-sm example">
-                            <option selected="">Open this select menu</option>
-                        </select>
-                        <select class="form-select form-select-sm mb-3" id="neighbourhood" aria-label=".form-select-sm example">
-                            <option selected="">Open this select menu</option>
-                        </select>
-                        <select class="form-select form-select-sm mb-3" id="street" aria-label=".form-select-sm example">
-                            <option selected="">Open this select menu</option>
-                        </select>
-                        <select class="form-select form-select-sm mb-3" id="apartment" aria-label=".form-select-sm example">
-                            <option selected="">Open this select menu</option>
-                        </select>
-                        <select class="form-select form-select-sm mb-3" id="apartmentno" aria-label=".form-select-sm example">
-                            <option selected="">Open this select menu</option>
-                        </select>
-                        <input hidden type="text" name="ClientId" value="1" />
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="AddressName" placeholder="Evim" name="AddressName">
+                            <label for="AddressName">Adres Başlığı</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <select class="form-select form-select-sm mb-3" id="country" asp-items="@(new SelectList(@Model.Country,"CountryId","Name"))" aria-label="Floating label select example" name="CountryId">
+                            </select>
+                            <label for="country">Ülke</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <select class="form-select form-select-sm mb-3" id="city" asp-items="@(new SelectList(string.Empty,"CityId","Name"))" aria-label="Floating label select example" name="CityId">
+                            </select>
+                            <label for="city">Şehir</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <select class="form-select form-select-sm mb-3" id="state" asp-items="@(new SelectList(string.Empty,"StateId","Name"))" aria-label="Floating label select example" name="StateId">
+                            </select>
+                            <label for="state">İlçe</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <select class="form-select form-select-sm mb-3" id="neighbourhood" asp-items="@(new SelectList(string.Empty,"NeighbourhoodId","Name"))" aria-label="Floating label select example" name="NeighbourhoodId">
+                            </select>
+                            <label for="neighbourhood">Mahalle</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <select class="form-select form-select-sm mb-3" id="street" asp-items="@(new SelectList(string.Empty,"StreetId","Name"))" aria-label="Floating label select example" name="StreetId">
+                            </select>
+                            <label for="street">Sokak</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <select class="form-select form-select-sm mb-3" id="apartment" asp-items="@(new SelectList(string.Empty,"ApartmentId","Name"))" aria-label="Floating label select example" name="ApartmentId">
+                            </select>
+                            <label for="apartment">Apartman</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <select class="form-select form-select-sm mb-3" id="apartmentno" asp-items="@(new SelectList(string.Empty,"ApartmentNumberId","Name"))" aria-label="Floating label select example" name="ApartmentNumberId">
+                            </select>
+                            <label for="apartmentno">Daire</label>
+                        </div>
+
                         <button type="submit" class="btn btn-sm btn-outline-success addCard">Ekle</button>
                         <button type="button" class="btn btn-sm btn-outline-danger m-2" data-bs-dismiss="modal">İptal</button>
                     </form>
@@ -55,7 +71,7 @@
 
     <div class="col-sm col-xl pt-4 px-4">
         <div class="bg-secondary rounded h-100 p-4">
-            <h6 class="mb-4">Kartlarım</h6>
+            <h6 class="mb-4">Adreslerim</h6>
             <table class="table table-borderless">
                 <thead>
                     <tr>
@@ -82,7 +98,7 @@
                         <td>@a.Street</td>
                         <td>@a.Apartment</td>
                         <td>@a.No</td>
-                        <td><button type="button" class="btn btn-outline-danger">Sil</button></td>
+                        <td><a href="/Client/Address/Delete/@a.AddressId" class="btn btn-outline-danger">Sil</a></td>
                     </tr>
                 }
 
@@ -104,18 +120,95 @@
             $("#small-modal").modal("show");
         });
 
-        var sel1 = document.querySelector('#country');
-        var sel2 = document.querySelector('#city');
-        var options2 = sel2.querySelectorAll('option');
-
-        function giveSelection(selValue) {
-            sel2.innerHTML = '';
-            for (var i = 0; i < options2.length; i++) {
-                if (options2[i].dataset.option === selValue) {
-                    sel2.appendChild(options2[i]);
-                }
-            }
-        }
-
+        //Cities
+        $(document).ready(function() {
+            $("#country").change(function() {
+                var url = '@Url.Content("~/")' + "Client/Address/GetCities";
+                var ddlsource = "#country";
+                $.getJSON(url, { id: $(ddlsource).val() }, function(data) {
+                    var items = "";
+                    $("#city").empty();
+                    $.each(data, function(i, city) {
+                        items += "<option value='" + city.value + "'>" + city.text + "</option>";
+                    });
+                    $("#city").html(items);
+                });
+            });
+        });
+        //States
+        $(document).ready(function() {
+            $("#city").change(function() {
+                var url = '@Url.Content("~/")' + "Client/Address/GetStates";
+                var ddlsource = "#city";
+                $.getJSON(url, { id: $(ddlsource).val() }, function(data) {
+                    var items = "";
+                    $("#state").empty();
+                    $.each(data, function(i, state) {
+                        items += "<option value='" + state.value + "'>" + state.text + "</option>";
+                    });
+                    $("#state").html(items);
+                });
+            });
+        });
+        //Neighbourhoods
+        $(document).ready(function() {
+            $("#state").change(function() {
+                var url = '@Url.Content("~/")' + "Client/Address/GetNeighbourhoods";
+                var ddlsource = "#state";
+                $.getJSON(url, { id: $(ddlsource).val() }, function(data) {
+                    var items = "";
+                    $("#neighbourhood").empty();
+                    $.each(data, function(i, neighbourhood) {
+                        items += "<option value='" + neighbourhood.value + "'>" + neighbourhood.text + "</option>";
+                    });
+                    $("#neighbourhood").html(items);
+                });
+            });
+        });
+        //Streets
+        $(document).ready(function() {
+            $("#neighbourhood").change(function() {
+                var url = '@Url.Content("~/")' + "Client/Address/GetStreets";
+                var ddlsource = "#neighbourhood";
+                $.getJSON(url, { id: $(ddlsource).val() }, function(data) {
+                    var items = "";
+                    $("#street").empty();
+                    $.each(data, function(i, street) {
+                        items += "<option value='" + street.value + "'>" + street.text + "</option>";
+                    });
+                    $("#street").html(items);
+                });
+            });
+        });
+        //Apartments
+        $(document).ready(function() {
+            $("#street").change(function() {
+                var url = '@Url.Content("~/")' + "Client/Address/GetApartments";
+                var ddlsource = "#street";
+                $.getJSON(url, { id: $(ddlsource).val() }, function(data) {
+                    var items = "";
+                    $("#apartment").empty();
+                    $.each(data, function(i, apartment) {
+                        items += "<option value='" + apartment.value + "'>" + apartment.text + "</option>";
+                    });
+                    $("#apartment").html(items);
+                });
+            });
+        });
+        //Apartment Numbers
+        $(document).ready(function() {
+            $("#apartment").change(function() {
+                var url = '@Url.Content("~/")' + "Client/Address/GetApartmentNumbers";
+                var ddlsource = "#apartment";
+                $.getJSON(url, { id: $(ddlsource).val() }, function(data) {
+                    var items = "";
+                    $("#apartmentno").empty();
+                    $.each(data, function(i, apartmentno) {
+                        items += "<option value='" + apartmentno.value + "'>" + apartmentno.text + "</option>";
+                    });
+                    $("#apartmentno").html(items);
+                });
+            });
+        });
     </script>
 }

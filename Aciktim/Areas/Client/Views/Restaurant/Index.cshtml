@@ -3,6 +3,17 @@
 @{
     Layout = "_Layout";
 }
+
+<div class="position-fixed top-0 end-0 p-3" style="z-index: 1021">
+    <div id="liveToast" class="toast fade hide" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="500">
+        <div class="d-flex">
+            <div class="toast-body">
+            </div>
+            <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
 <div class="col-sm col-xl pt-4 px-4">
     <div class="bg-secondary rounded h-100 p-4">
         <h6 class="mb-4">@Model.Restaurant.RestaurantName</h6>
@@ -36,7 +47,7 @@
                             </div>
                             <div class="ms-3">
                                 <p class="mb-2">@p.Price.ToString("0.00") &#8378;</p>
-                                <a href="#" class="btn btn-outline-info m-2 btnEkle" data-pId="@p.ProductId">Ekle</a>
+                                <a href="#" class="btn btn-outline-info m-2 btnEkle" data-pId="@p.ProductId" data-pName="@p.ProductName">Ekle</a>
                             </div>
                         </div>
                     </div>
@@ -78,17 +89,25 @@
     <script>
         $(".btnEkle").click(function() {
             var id = $(this).attr("data-pId");
+            var name = $(this).attr("data-pName");
             $.ajax({
                 type: "POST",
                 url: "/Client/Restaurant/Add/" + id,
                 success: function(durum) {
-                    if (durum == "başarılı") {
-                        location.reload();
+                    if (durum == "success") {
+                        $(".toast-body").html(name + " sepete eklendi.");
+                        var toastElList = [].slice.call(document.querySelectorAll('.toast'))
+                        var toastList = toastElList.map(function(toastEl) {
+                            return new bootstrap.Toast(toastEl)
+                        })
+                        toastList.forEach(toast => toast.show())
                     }
                 },
                 error: function() {
                 }
             });
-        })
+        });
+                                //document.getElementsByClassName("btnEkle").onclick = function() {}
+
     </script>
 }

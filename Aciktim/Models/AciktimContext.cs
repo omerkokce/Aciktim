@@ -73,6 +73,11 @@ namespace Aciktim.Models
             SqlParameter pId = new SqlParameter("@id", id);
             return Products.FromSqlRaw("EXECUTE GetBasketProduct @id", pId);
         }
+        public IQueryable<Category> GetCategoryName(int id)
+        {
+            SqlParameter pId = new SqlParameter("@id", id);
+            return Categories.FromSqlRaw("EXECUTE GetCategoryName @id", pId);
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -264,6 +269,12 @@ namespace Aciktim.Models
                 entity.ToTable("Category");
 
                 entity.Property(e => e.CategoryName).HasMaxLength(50);
+
+                entity.HasOne(d => d.Restaurant)
+                    .WithMany(p => p.Categories)
+                    .HasForeignKey(d => d.CategoryId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Category__Restau__3FD07829");
             });
 
             modelBuilder.Entity<City>(entity =>

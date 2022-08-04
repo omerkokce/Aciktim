@@ -60,6 +60,10 @@
     font-weight: normal;
     border-radius: 50px;
 }
+.disabled {
+    pointer-events: none;
+    cursor: default;
+}
 
 
 /*** Layout ***/

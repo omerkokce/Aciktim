@@ -1,0 +1,58 @@
+﻿@using Aciktim.Models
+@model List<Product>
+@{
+    Layout = "_Layout";
+    AciktimContext _context = new AciktimContext();
+}
+<div class="col-sm col-xl pt-4 px-4">
+    <div class="bg-secondary rounded h-100 p-4">
+        <h6 class="mb-4">Siparişlerim</h6>
+        <table class="table table-borderless">
+            <thead>
+                <tr>
+                    <th scope="col">Resim</th>
+                    <th scope="col">İsim</th>
+                    <th scope="col">İçerik</th>
+                    <th scope="col">Kategori</th>
+                    <th scope="col">Fiyat</th>
+                    <th scope="col">Güncelle</th>
+                    <th scope="col">Sil</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Product p in ViewBag.Products)
+                {
+
+                    <tr>
+                        <td>
+                            @if (p.Image == null)
+                            {
+                                <img class="img-fluid mx-auto mb-4" src="~/img/default.jpg" style="height: 100px;">
+                            }
+                            else
+                            {
+                                <span>@p.Image</span>
+                            }
+                        </td>
+                        <td>@p.ProductName</td>
+                        <td>@p.Content</td>
+                        <td>
+                            @foreach (Category c in _context.GetCategoryName(p.ProductId).ToList())
+                            {
+                                <span>@c.CategoryName, </span>
+                            }
+                        </td>
+                        <td>@p.Price.ToString("0.00")</td>
+                        <td><a href="#" class="btn btn-outline-danger">Sil</a></td>
+                        <td><a href="#" class="btn btn-outline-success">Güncelle</a></td>
+                    </tr>
+                }
+                <tr>
+                    <td rowspan="4">
+                        <button type="button" class="btn btn-sm btn-outline-success m-2 openModal" data-toggle="modal" data-target="#small-modal">Yeni Ürün Ekle</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
