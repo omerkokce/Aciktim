@@ -14,6 +14,7 @@
                     <th scope="col">Tarih</th>
                     <th scope="col">Adres</th>
                     <th scope="col">Restorant</th>
+                    <th scope="col">Ürünler</th>
                     <th scope="col">Ücret</th>
                 </tr>
             </thead>
@@ -29,6 +30,12 @@
 
                         </td>
                         <td>@o.Restaurant.RestaurantName</td>
+                        <td>
+                            @foreach(Product p in _context.GetProductFromOrder(o.OrderId)){
+                                <span>@p.ProductName &nbsp;</span>
+                            }
+
+                        </td>
                         <td>
                             @foreach(OrderPrice op in _context.GetPriceOrder(o.OrderId)){
                                 <span>@op.Price.ToString("0.00") &#8378;</span>

@@ -1,58 +1,95 @@
 ﻿@using Aciktim.Models
-@model List<Product>
 @{
     Layout = "_Layout";
     AciktimContext _context = new AciktimContext();
+    decimal price = 0;
 }
 <div class="col-sm col-xl pt-4 px-4">
     <div class="bg-secondary rounded h-100 p-4">
-        <h6 class="mb-4">Siparişlerim</h6>
+        <!--Active Orders-->
+        <h6 class="mb-4">Aktif Siparişler</h6>
         <table class="table table-borderless">
             <thead>
                 <tr>
-                    <th scope="col">Resim</th>
-                    <th scope="col">İsim</th>
-                    <th scope="col">İçerik</th>
-                    <th scope="col">Kategori</th>
-                    <th scope="col">Fiyat</th>
-                    <th scope="col">Güncelle</th>
-                    <th scope="col">Sil</th>
+                    <th scope="col">Siparişi Veren</th>
+                    <th scope="col">Ürünler</th>
+                    <th scope="col">Ücret</th>
+                    <th scope="col">Tarih</th>
+                    <th scope="col">Gönder</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (Product p in ViewBag.Products)
+                @foreach (Order o in ViewBag.Order)
                 {
+                    if (o.IsActive == true)
+                    {
+                        <tr>
+                            <td>
+                                @o.Client.ClientName
+                            </td>
+                            <td>
+                                @foreach (Product p in _context.GetProductFromOrder(2).ToList())
+                                {
+                                    <span>
+                                        @p.ProductName &nbsp;
+                                    </span>
+                                    price += p.Price;
+                                }
+                            </td>
+                            <td>@price.ToString("0.00")</td>
+                            <td>
+                                @o.Date
+                            </td>
+                            <td><a href="#" class="btn btn-outline-success">Gönder</a></td>
+                        </tr>
+                    }
 
-                    <tr>
-                        <td>
-                            @if (p.Image == null)
-                            {
-                                <img class="img-fluid mx-auto mb-4" src="~/img/default.jpg" style="height: 100px;">
-                            }
-                            else
-                            {
-                                <span>@p.Image</span>
-                            }
-                        </td>
-                        <td>@p.ProductName</td>
-                        <td>@p.Content</td>
-                        <td>
-                            @foreach (Category c in _context.GetCategoryName(p.ProductId).ToList())
-                            {
-                                <span>@c.CategoryName, </span>
-                            }
-                        </td>
-                        <td>@p.Price.ToString("0.00")</td>
-                        <td><a href="#" class="btn btn-outline-danger">Sil</a></td>
-                        <td><a href="#" class="btn btn-outline-success">Güncelle</a></td>
-                    </tr>
                 }
-                <tr>
-                    <td rowspan="4">
-                        <button type="button" class="btn btn-sm btn-outline-success m-2 openModal" data-toggle="modal" data-target="#small-modal">Yeni Ürün Ekle</button>
-                    </td>
-                </tr>
             </tbody>
         </table>
     </div>
 </div>
+<!--InActive Orders-->
+<div class="col-sm col-xl pt-4 px-4">
+    <div class="bg-secondary rounded h-100 p-4">
+        <h6 class="mb-4">Önceki Siparişler</h6>
+        <table class="table table-borderless">
+            <thead>
+                <tr>
+                    <th scope="col">Siparişi Veren</th>
+                    <th scope="col">Ürünler</th>
+                    <th scope="col">Ücret</th>
+                    <th scope="col">Tarih</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Order o in ViewBag.Order)
+                {
+                    if (o.IsActive == false)
+                    {
+                        <tr>
+                            <td>
+                                @o.Client.ClientName
+                            </td>
+                            <td>
+                                <span>
+                                    @foreach (Product p in _context.GetProductFromOrder(2).ToList())
+                                    {
+                                        @p.ProductName
+                                        price += p.Price;
+                                    }
+                                </span>
+                            </td>
+                            <td>@price.ToString("0.00")</td>
+                            <td>
+                                @o.Date
+                            </td>
+                        </tr>
+                    }
+
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

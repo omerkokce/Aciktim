@@ -1,17 +1,16 @@
 ﻿using Aciktim.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Aciktim.Areas.Restaurant.Controllers
 {
     [Area("Restaurant")]
-    public class HomeController : Controller
+    public class CarrierController : Controller
     {
         AciktimContext _context = new AciktimContext();
         public IActionResult Index()
         {
-            ViewBag.Order = _context.Orders.Where(o => o.RestaurantId == 2).Include(o => o.Client).ToList();
-            return View();
+            List<Models.Carrier> list = _context.GetRestaurantCarrier(2).ToList();
+            return View(list);
         }
     }
 }

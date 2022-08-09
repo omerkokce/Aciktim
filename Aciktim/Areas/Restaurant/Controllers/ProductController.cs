@@ -56,13 +56,54 @@ namespace Aciktim.Areas.Restaurant.Controllers
 
             return RedirectToAction("Index");
         }
+        [HttpGet]
+        public IActionResult Update(int id)
+        {
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
+            Product product = _context.Products.FirstOrDefault(x => x.ProductId == id);
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
+            List<ProductCategory> pc = _context.ProductCategories.Where(a => a.ProductId == id).ToList();
+            List<int> cId = new List<int>();
+            ViewBag.Category = PopulateCategories();
+            foreach (ProductCategory item in pc)
+            {
+                cId.Add(item.CategoryId);
+            }
+            ViewBag.Pc = cId;
+            if (product != null)
+            {
+                return View("Update", product);
+            }
+            return RedirectToAction("Index");
+        }
+        [HttpPost]
+        public IActionResult Update(Product p, string[] category)
+        {
+            if (p != null)
+            {
+                _context.Products.Update(p);
+                _context.SaveChanges();
 
+                foreach (ProductCategory item in _context.ProductCategories.Where(x=>x.ProductId == p.ProductId))
+                {
+                    _context.ProductCategories.Remove(item);
+                }
+                _context.SaveChanges();
+
+                foreach (string item in category)
+                {
+                    _context.ProductCategories.Add(new ProductCategory { CategoryId = Convert.ToInt32(item), ProductId = p.ProductId });
+                }
+                _context.SaveChanges();
+            }
+            return RedirectToAction("Index");
+        }
         private List<SelectListItem> PopulateCategories()
         {
             List<SelectListItem> items = new List<SelectListItem>();
             using (_context)
             {
-                List<Category> categories = _context.GetCategoryName(2).ToList();
+                List<Category> categories = _context.Categories.Where(c=>c.RestaurantId == 2).ToList();
                 foreach (Category c in categories)
                     items.Add(new SelectListItem
                     {

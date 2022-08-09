@@ -1,45 +1,37 @@
 ﻿@using Aciktim.Models
-@addTagHelper*, Microsoft.AspNetCore.Mvc.TagHelpers
+@model List<Menu>
+@addTagHelper *, Kendo.Mvc
 @{
     Layout = "_Layout";
     AciktimContext _context = new AciktimContext();
-    string category = "";
 }
 @section body{
     <div class="modal fade small-model" id="small-modal" tabindex="-1" role="dialog" aria-labelledby="small-model-label" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content bg-secondary rounded h-100 p-4" data-border-top="multi">
                 <div class="model-header" style="display:flex;">
-                    <h6 class="mb-4">Yeni Kart Ekle</h6>
+                    <h6 class="mb-4">Yeni Menü Ekle</h6>
                     <button type="button" class="btn btn-sm btn-sm-square btn-outline-primary" style="margin:-.5rem -.5rem -.5rem auto;" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="/Restaurant/Product/Add" method="post" role="form">
+                    <form action="/Restaurant/Menu/Add" method="post" role="form">
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="cardNumber" name="ImageId" placeholder="" maxlength="16">
+                            <input type="text" class="form-control" id="cardNumber" name="ImageId" placeholder="">
                             <label for="floatingInput">Resim</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" placeholder="Pizza" name="ProductName" />
+                            <input type="text" class="form-control" placeholder="Ramazan Menüsü" name="MenuName" />
                             <label for="floatingInput">İsim</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="content" placeholder="sucuk, mozarella, özel sos" name="Content">
-                            <label for="floatingInput">İçerik</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <h6>Kategori</h6>
-                            @foreach (SelectListItem c in ViewBag.Category)
-                            {
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="@c.Value" id="@c.Value" name="Category" checked="@c.Selected">
-                                    <label class="form-check-label" for="@c.Value">
-                                        @c.Text
-                                    </label>
-                                </div>
-                            }
+                            <label for="optional">Ürünler</label>
+                            <kendo-multiselect name="optional"
+                                           placeholder="Select attendees..."
+                                           auto-close="false"
+                                           bind-to="@(new SelectList(@ViewBag.Product,"ProductId","ProductName"))">
+                            </kendo-multiselect>
                         </div>
                         <div class="form-floating mb-3">
                             <input type="number" class="form-control" id="Price" placeholder="49.99" name="Price" min="0.00" step="0.01">
@@ -66,64 +58,57 @@
 }
     <div class="col-sm col-xl pt-4 px-4">
         <div class="bg-secondary rounded h-100 p-4">
-            <h6 class="mb-4">Siparişlerim</h6>
+            <h6 class="mb-4">Menüler</h6>
             <table class="table table-borderless">
                 <thead>
                     <tr>
                         <th scope="col">Resim</th>
                         <th scope="col">İsim</th>
-                        <th scope="col">İçerik</th>
-                        <th scope="col">Kategori</th>
+                        <th scope="col">Ürünler</th>
                         <th scope="col">Fiyat</th>
                         <th scope="col">Güncelle</th>
                         <th scope="col">Sil</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (Product p in ViewBag.Products)
+                    @foreach (Menu m in Model)
                 {
 
                     <tr>
                         <td>
-                            @if (p.Image == null)
+                            @if (m.Image == null)
                             {
                                 <img class="img-fluid mx-auto mb-4" src="~/img/default.jpg" style="height: 100px;">
                             }
                             else
                             {
-                                <span>@p.Image</span>
+                                <span>@m.Image</span>
                             }
                         </td>
-                        <td>@p.ProductName</td>
-                        <td>@p.Content</td>
+                        <td>@m.MenuName</td>
                         <td>
-                            @foreach (Category c in _context.GetCategoryName(p.ProductId).ToList())
+                            @foreach (Product p in _context.GetProductFromMenu(m.MenuId))
                             {
-                                category += @c.CategoryName + ", ";
-                            }
-                            @{
-                                if (category != "")
-                                    category = category.Substring(0, category.Length - 2);
-                            }
-                            <span class="categoryName">@category</span>
-                            @{
-                                category = "";
+                                <span>
+                                    @p.ProductName &nbsp;
+                                </span>
                             }
                         </td>
-                        <td>@p.Price.ToString("0.00")</td>
-                        <td><a href="/Restaurant/Product/Delete/@p.ProductId" class="btn btn-outline-danger">Sil</a></td>
-                        <td><a href="/Restaurant/Product/Update/@p.ProductId" class="btn btn-outline-success btnUpdate">Güncelle</a></td>
+                        <td>@m.Price.ToString("0.00")</td>
+                        <td><a href="/Restaurant/Menu/Delete/@m.MenuId" class="btn btn-outline-danger">Sil</a></td>
+                        <td><a href="/Restaurant/Menu/Update/@m.MenuId" class="btn btn-outline-success btnUpdate">Güncelle</a></td>
                     </tr>
                 }
                 <tr>
                     <td rowspan="4">
-                        <button type="button" class="btn btn-sm btn-outline-success m-2 openModal" data-toggle="modal" data-target="#small-modal">Yeni Ürün Ekle</button>
+                        <button type="button" class="btn btn-sm btn-outline-success m-2 openModal" data-toggle="modal" data-target="#small-modal">Yeni Menü Ekle</button>
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
 </div>
+
 @section scripts{
 
     <script>

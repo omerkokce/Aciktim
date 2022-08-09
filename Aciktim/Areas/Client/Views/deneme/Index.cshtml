@@ -1,32 +1,20 @@
-﻿@{
+﻿@using Aciktim.Models
+@model List<ProductCategory>
+@{
     Layout = "_Layout";
+    List<int> a = new List<int>() { 1, 3, 4 };
 }
-<button type="button" class="btn btn-primary" id="liveToastBtn">Show live toast</button>
 
-<div class="position-fixed top-0 end-0 p-3" style="z-index: 1021">
-    <div id="liveToast" class="toast fade hide" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="500">
-        <div class="d-flex">
-            <div class="toast-body">
-                Hello, world! This is a toast message.
-            </div>
-            <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
+<div class="col-sm-12 col-xl-6">
+    <div class="bg-secondary rounded h-100 p-4">
+        <h6 class="mb-4">Text Elements</h6>
+        @foreach (int item in ViewBag.qwe)
+        {
+            if (a.Contains(item))
+            {
+                <span>True</span>
+            }
+            <p>@item</p>
+        }
     </div>
 </div>
-@section scripts{
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        /*
-        $("#liveToastBtn").click(function() {
-            $("#liveToast").removeClass("hide").addClass("show");
-        });*/
-
-        document.getElementById("liveToastBtn").onclick = function() {
-            var toastElList = [].slice.call(document.querySelectorAll('.toast'))
-            var toastList = toastElList.map(function(toastEl) {
-                return new bootstrap.Toast(toastEl)
-            })
-            toastList.forEach(toast => toast.show())
-        }
-    </script>
-}

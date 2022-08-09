@@ -1,0 +1,37 @@
+﻿@using Aciktim.Models
+@model List<Carrier>
+@{
+    Layout = "_Layout";
+    AciktimContext _context = new AciktimContext();
+}
+<div class="col-sm col-xl pt-4 px-4">
+    <div class="bg-secondary rounded h-100 p-4">
+        <h6 class="mb-4">Kuryeler</h6>
+        <table class="table table-borderless">
+            <thead>
+                <tr>
+                    <th scope="col">Adı</th>
+                    <th scope="col">Telefonu</th>
+                    <th scope="col">E-mail'i</th>
+                    <th scope="col">Adresi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Carrier c in Model)
+                {
+                    <tr>
+                        <td>@c.CarrierName</td>
+                        <td>@c.Phone</td>
+                        <td>@c.EMail</td>
+                        <td>
+                            @foreach (GetAddress a in _context.GetCarrierAddress(c.CarrierId))
+                            {
+                                <p>Kurye adresi: <ins>@a.Country @a.City @a.State @a.Neighbourhood mah. @a.Street sk. @a.Apartment apt No:@a.No</ins></p>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

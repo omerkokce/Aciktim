@@ -1,0 +1,45 @@
+﻿@using Aciktim.Models
+@model Product
+@{
+    Layout = "_Layout";
+    AciktimContext _context = new AciktimContext();
+    var abc = false;
+}
+<div class="col-sm col-xl pt-4 px-4">
+    <div class="bg-secondary rounded h-100 p-4">
+        <form action="/Restaurant/Product/Update" method="post" role="form">
+            <input hidden type="text" name="ProductId" value="@Model.ProductId" />
+            <input hidden type="text" name="RestaurantId" value="@Model.RestaurantId" />
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="Phone" name="Image" value="@Model.Image">
+                <label for="floatingInput">Ürün Resmi</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="ClientName" name="ProductName" value="@Model.ProductName">
+                <label for="floatingInput">Ürün Adı</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="E-Mail" name="Content" value="@Model.Content">
+                <label for="floatingInput">Ürün İçeriği</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="Phone" name="Price" value="@Model.Price">
+                <label for="floatingInput">Ürün Ücreti</label>
+            </div>
+            <div class="form-floating mb-3">
+                @foreach (SelectListItem c in ViewBag.Category)
+                {
+                    abc = ViewBag.Pc.Contains(Convert.ToInt32(c.Value));
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="@c.Value" id="@c.Value" name="Category" checked="@abc">
+                        <label class="form-check-label" for="@c.Value">
+                            @c.Text
+                        </label>
+                    </div>
+                }
+            </div>
+
+            <button type="submit" class="btn btn-sm btn-outline-success">Kaydet</button>
+        </form>
+    </div>
+</div>

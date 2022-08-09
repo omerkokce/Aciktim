@@ -1,0 +1,70 @@
+﻿@using Aciktim.Models
+@model List<Category>
+@{
+    Layout = "_Layout";
+}
+@section body{
+    <div class="modal fade small-model" id="small-modal" tabindex="-1" role="dialog" aria-labelledby="small-model-label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content bg-secondary rounded h-100 p-4" data-border-top="multi">
+                <div class="model-header" style="display:flex;">
+                    <h6 class="mb-4">Yeni Kategori Ekle</h6>
+                    <button type="button" class="btn btn-sm btn-sm-square btn-outline-primary" style="margin:-.5rem -.5rem -.5rem auto;" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="/Restaurant/Category/Add" method="post" role="form">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="CategoryName" name="CategoryName" placeholder="">
+                            <label for="floatingInput">Kategori Adı</label>
+                        </div>
+                        <input hidden type="text" name="RestaurantId" value="2" />
+                        <button type="submit" class="btn btn-sm btn-outline-success">Ekle</button>
+                        <button type="button" class="btn btn-sm btn-outline-danger m-2" data-bs-dismiss="modal">İptal</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+}
+    <div class="col-sm col-xl pt-4 px-4">
+        <div class="bg-secondary rounded h-100 p-4">
+            <h6 class="mb-4">Kategoriler</h6>
+            <table class="table table-borderless">
+                <thead>
+                    <tr>
+                        <th scope="col">Kategori Adı</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (Category c in Model)
+                {
+                    <tr>
+                        <td>@c.CategoryName</td>
+                        <td><a href="/Restaurant/Category/Delete/@c.CategoryId" class="btn btn-outline-danger">Sil</a></td>
+                        <td><a href="/Restaurant/Category/Update/@c.CategoryId" class="btn btn-outline-success btnUpdate">Güncelle</a></td>
+                    </tr>
+                }
+
+                <tr>
+                    <td rowspan="4">
+                        <button type="button" class="btn btn-sm btn-outline-success m-2 openModal" data-toggle="modal" data-target="#small-modal">Yeni Kategori Ekle</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+@section scripts{
+
+    <script>
+        $(".openModal").click(function() {
+            $("#small-modal").modal("show");
+        });
+    </script>
+}

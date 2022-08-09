@@ -47,6 +47,7 @@ namespace Aciktim.Models
         public virtual DbSet<Street> Streets { get; set; } = null!;
         public virtual DbSet<GetAddress> FullAddress { get; set; }
         public virtual DbSet<OrderPrice> OrderPrices { get; set; }
+        public virtual DbSet<LoginModel> LoginModels { get; set; }
 
         public IQueryable<GetAddress> GetRestaurantFullAddress(int id)
         {
@@ -77,6 +78,26 @@ namespace Aciktim.Models
         {
             SqlParameter pId = new SqlParameter("@id", id);
             return Categories.FromSqlRaw("EXECUTE GetCategoryName @id", pId);
+        }
+        public IQueryable<Product> GetProductFromOrder(int id)
+        {
+            SqlParameter pId = new SqlParameter("@id", id);
+            return Products.FromSqlRaw("EXECUTE GetProductFromOrder @id", pId);
+        }
+        public IQueryable<Product> GetProductFromMenu(int id)
+        {
+            SqlParameter pId = new SqlParameter("@id", id);
+            return Products.FromSqlRaw("EXECUTE GetProductFromMenu @id", pId);
+        }
+        public IQueryable<Carrier> GetRestaurantCarrier(int id)
+        {
+            SqlParameter pId = new SqlParameter("@id", id);
+            return Carriers.FromSqlRaw("EXECUTE GetRestaurantCarrier @id", pId);
+        }
+        public IQueryable<GetAddress> GetCarrierAddress(int id)
+        {
+            SqlParameter pId = new SqlParameter("@id", id);
+            return FullAddress.FromSqlRaw("EXECUTE GetCarrierAddress @id", pId);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -272,7 +293,7 @@ namespace Aciktim.Models
 
                 entity.HasOne(d => d.Restaurant)
                     .WithMany(p => p.Categories)
-                    .HasForeignKey(d => d.CategoryId)
+                    .HasForeignKey(d => d.RestaurantId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__Category__Restau__3FD07829");
             });
@@ -631,6 +652,9 @@ namespace Aciktim.Models
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__Street__Neighbou__05D8E0BE");
             });
+            modelBuilder.Entity<LoginModel>(entity =>
+                entity.HasNoKey()
+            );
 
             OnModelCreatingPartial(modelBuilder);
         }

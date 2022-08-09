@@ -21,15 +21,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Carrier\Controllers\" />
     <Folder Include="Areas\Carrier\Data\" />
     <Folder Include="Areas\Carrier\Models\" />
-    <Folder Include="Areas\Carrier\Views\" />
     <Folder Include="Areas\Client\Data\" />
     <Folder Include="Areas\Client\Models\" />
     <Folder Include="Areas\Restaurant\Data\" />
     <Folder Include="Areas\Restaurant\Models\" />
-    <Folder Include="Models\" />
   </ItemGroup>
 
 </Project>

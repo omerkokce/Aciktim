@@ -1,0 +1,28 @@
+﻿@using Aciktim.Models
+@model Carrier
+@{
+    Layout = "_Layout";
+}
+<div class="col-sm col-xl pt-4 px-4">
+    <div class="bg-secondary rounded h-100 p-4">
+        <form action="/Carrier/Account/Update" method="post" role="form">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="CarrierName" name="CarrierName" value="@Model.CarrierName">
+                <label for="floatingInput">Kurye Adı</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="EMail" name="EMail" value="@Model.EMail">
+                <label for="floatingInput">E-Mail</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="Phone" name="Phone" value="@Model.Phone" maxlength="13">
+                <label for="floatingInput">Telefon</label>
+            </div>
+            <input hidden type="text" name="RoleId" value="@Model.RoleId" />
+            <input hidden type="text" name="Password" value="@Model.Password" />
+            <input hidden type="text" name="AddressId" value="@Model.AddressId" />
+            <input hidden type="text" name="CarrierId" value="@Model.CarrierId" />
+            <button type="submit" class="btn btn-sm btn-outline-success">Kaydet</button>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,27 @@
+﻿@using Aciktim.Models
+@model Menu
+@{
+    Layout = "_Layout";
+}
+<div class="col-sm col-xl pt-4 px-4">
+    <div class="bg-secondary rounded h-100 p-4">
+        <form action="/Restaurant/Menu/Update" method="post" role="form">
+            <input hidden type="text" name="MenuId" value="@Model.MenuId" />
+            <input hidden type="text" name="RestaurantId" value="@Model.RestaurantId" />
+
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="CategoryName" name="ImageId" value="@Model.ImageId">
+                <label for="floatingInput">Kategori Adı</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="CategoryName" name="MenuName" value="@Model.MenuName">
+                <label for="floatingInput">Kategori Adı</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="CategoryName" name="Price" value="@Model.Price">
+                <label for="floatingInput">Kategori Adı</label>
+            </div>
+            <button type="submit" class="btn btn-sm btn-outline-success">Kaydet</button>
+        </form>
+    </div>
+</div>

@@ -15,6 +15,7 @@ namespace Aciktim.Models
         public int AddressId { get; set; }
         public int RestaurantId { get; set; }
         public DateTime? Date { get; set; }
+        public bool IsActive { get; set; }
 
         public virtual Address Address { get; set; } = null!;
         public virtual Client Client { get; set; } = null!;
