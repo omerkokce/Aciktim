@@ -1,0 +1,25 @@
+﻿@using Aciktim.Models
+@model Manager
+@{
+    Layout = "_Layout";
+}
+<div class="col-sm col-xl pt-4 px-4">
+    <div class="bg-secondary rounded h-100 p-4">
+        <form action="/Restaurant/Manager/Update/@ViewBag.id" method="post" role="form">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="ManagerName" name="ManagerName" value="@Model.ManagerName">
+                <label for="floatingInput">Yönetici Adı</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="Surname" name="Surname" value="@Model.Surname">
+                <label for="floatingInput">Yönetici Soyadı</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="number" class="form-control" id="Tcno" name="Tcno" value="@Model.Tcno" maxlength="11">
+                <label for="floatingInput">Telefon</label>
+            </div>
+            <input hidden type="text" name="ManagerId" value="@Model.ManagerId" />
+            <button type="submit" class="btn btn-sm btn-outline-success">Kaydet</button>
+        </form>
+    </div>
+</div>

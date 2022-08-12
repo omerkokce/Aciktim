@@ -1,15 +1,21 @@
 ﻿using Aciktim.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Aciktim.Areas.Restaurant.Controllers
 {
+    [Authorize(Policy = "Restaurant")]
     [Area("Restaurant")]
     public class CategoryController : Controller
     {
         AciktimContext _context = new AciktimContext();
-        public IActionResult Index()
+        public IActionResult Index(int id)
         {
-            List<Category> categories =  _context.Categories.Where(c => c.RestaurantId == 2).ToList();
+            string name = User.FindFirstValue("UserName");
+            ViewBag.name = name;
+            ViewBag.id = id;
+            List<Category> categories = _context.Categories.Where(c => c.RestaurantId == id).ToList();
             return View(categories);
         }
 
@@ -25,7 +31,7 @@ namespace Aciktim.Areas.Restaurant.Controllers
                 throw e;
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { id = category.RestaurantId });
         }
 
         public IActionResult Delete(int id)
@@ -39,10 +45,11 @@ namespace Aciktim.Areas.Restaurant.Controllers
             if (c != null)
             {
                 _context.Categories.Remove(c);
+                _context.SaveChanges();
+                return RedirectToAction("Index", new { id = c.RestaurantId });
             }
-            _context.SaveChanges();
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
@@ -53,7 +60,7 @@ namespace Aciktim.Areas.Restaurant.Controllers
             {
                 return View("Update", category);
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Home");
         }
         [HttpPost]
         public IActionResult Update(Category category)
@@ -62,8 +69,9 @@ namespace Aciktim.Areas.Restaurant.Controllers
             {
                 _context.Categories.Update(category);
                 _context.SaveChanges();
+                return RedirectToAction("Index", new { id = category.RestaurantId });
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Home");
         }
     }
 }

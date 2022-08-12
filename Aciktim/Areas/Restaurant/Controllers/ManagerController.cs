@@ -7,32 +7,31 @@ namespace Aciktim.Areas.Restaurant.Controllers
 {
     [Authorize(Policy = "Restaurant")]
     [Area("Restaurant")]
-    public class AccountController : Controller
+    public class ManagerController : Controller
     {
         AciktimContext _context = new AciktimContext();
+
         public IActionResult Index(int id)
         {
             ViewBag.id = id;
             string name = User.FindFirstValue("UserName");
             ViewBag.name = name;
+
             Models.Restaurant restaurant = _context.Restaurants.FirstOrDefault(r => r.RestaurantId == id);
-            return View(restaurant);
+            Manager manager = _context.Managers.FirstOrDefault(m => m.ManagerId == restaurant.ManagerId);
+
+            return View(manager);
         }
 
-        public IActionResult Update(Models.Restaurant _restaurant)
+        [Route("/Restaurant/Manager/Update/{_id}")]
+        [HttpPost]
+        public IActionResult Update(Manager manager, int _id)
         {
-            if (_restaurant != null)
+            if (manager != null)
             {
-                try
-                {
-                    _context.Restaurants.Update(_restaurant);
-                    _context.SaveChanges();
-                    return RedirectToAction("Index", new { id = _restaurant.RestaurantId });
-                }
-                catch (Exception e)
-                {
-                    throw e;
-                }
+                _context.Managers.Update(manager);
+                _context.SaveChanges();
+                return RedirectToAction("Index", new { id = _id });
             }
             return RedirectToAction("Index", "Home");
         }

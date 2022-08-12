@@ -27,13 +27,15 @@
                     <h3 class="text-primary"><i class="fa fa-user-edit me-2"></i>Acıktım</h3>
                 </a>
                 <div class="navbar-nav w-100">
-                    <a href="/Restaurant" class="nav-item nav-link text-white">
+                    <a href="/Restaurant/Home/Index/@ViewBag.id" class="nav-item nav-link text-white">
                         <i class="fa fa-tachometer-alt me-2"></i>Anasayfa
                     </a>
-                    <a href="/Restaurant/Product" class="nav-item nav-link text-white"><i class="fa fa-th me-2"></i>Ürünler</a>
-                    <a href="/Restaurant/Category" class="nav-item nav-link text-white"><i class="fa fa-keyboard me-2"></i>Kategoriler</a>
-                    <a href="/Restaurant/Menu" class="nav-item nav-link text-white"><i class="fa fa-table me-2"></i>Menüler</a>
-                    <a href="/Restaurant/Carrier" class="nav-item nav-link text-white"><i class="fa fa-table me-2"></i>Kuryeler</a>
+                    <a href="/Restaurant/Product/Index/@ViewBag.id" class="nav-item nav-link text-white"><i class="fa fa-th me-2"></i>Ürünler</a>
+                    <a href="/Restaurant/Category/Index/@ViewBag.id" class="nav-item nav-link text-white"><i class="fa fa-keyboard me-2"></i>Kategoriler</a>
+                    <a href="/Restaurant/Menu/Index/@ViewBag.id" class="nav-item nav-link text-white"><i class="fa fa-table me-2"></i>Menüler</a>
+                    <a href="/Restaurant/Carrier/Index/@ViewBag.id" class="nav-item nav-link text-white"><i class="fa fa-table me-2"></i>Kuryeler</a>
+                    <a href="/Restaurant/Manager/Index/@ViewBag.id" class="nav-item nav-link text-white"><i class="fa fa-table me-2"></i>Yönetici</a>
+                    <a href="/Restaurant/Address/Index/@ViewBag.id" class="nav-item nav-link text-white"><i class="fa fa-table me-2"></i>Adres</a>
                 </div>
             </nav>
         </div>
@@ -52,10 +54,10 @@
 
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                            <span class="d-none d-lg-inline-flex">Kullanıcı Adı</span>
+                            <span class="d-none d-lg-inline-flex">@ViewBag.name</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
-                            <a href="/Restaurant/Account/Index" class="dropdown-item">
+                            <a href="/Restaurant/Account/Index/@ViewBag.id" class="dropdown-item">
                                 <div class="d-flex align-items-center">
                                     <div class="ms-2">
                                         <h6 class="fw-normal mb-0">Hesabım</h6>
@@ -63,7 +65,7 @@
                                 </div>
                             </a>
                             <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
+                            <a href="/Restaurant/Home/LogOut" class="dropdown-item">
                                 <div class="d-flex align-items-center">
                                     <div class="ms-2">
                                         <h6 class="fw-normal mb-0">Çıkış Yap</h6>

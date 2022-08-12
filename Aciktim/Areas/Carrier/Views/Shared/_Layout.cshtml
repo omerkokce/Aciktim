@@ -30,7 +30,7 @@
                     <a href="/Carrier" class="nav-item nav-link text-white">
                         <i class="fa fa-tachometer-alt me-2"></i>Anasayfa
                     </a>
-                    <a href="/Carrier/Address" class="nav-item nav-link text-white"><i class="fa fa-keyboard me-2"></i>Adreslerim</a>
+                    <a href="/Carrier/Address/Index/@ViewBag.id" class="nav-item nav-link text-white"><i class="fa fa-keyboard me-2"></i>Adreslerim</a>
                 </div>
             </nav>
         </div>
@@ -49,10 +49,10 @@
 
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                            <span class="d-none d-lg-inline-flex">Kullanıcı Adı</span>
+                            <span class="d-none d-lg-inline-flex">@ViewBag.name</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
-                            <a href="/Carrier/Account" class="dropdown-item">
+                            <a href="/Carrier/Account/Index/@ViewBag.id" class="dropdown-item">
                                 <div class="d-flex align-items-center">
                                     <div class="ms-2">
                                         <h6 class="fw-normal mb-0">Hesabım</h6>
@@ -60,7 +60,7 @@
                                 </div>
                             </a>
                             <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
+                            <a href="/Carrier/Home/LogOut" class="dropdown-item">
                                 <div class="d-flex align-items-center">
                                     <div class="ms-2">
                                         <h6 class="fw-normal mb-0">Çıkış Yap</h6>

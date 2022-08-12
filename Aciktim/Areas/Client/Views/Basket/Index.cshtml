@@ -32,7 +32,7 @@
                     </div>
                     <div class="ms-3">
                         <p class="mb-2">@p.Price.ToString("0.00") &#8378;</p>
-                        <a href="/Client/Basket/Delete/@p.ProductId" class="btn btn-outline-danger m-2 btnSil" data-pId="@p.ProductId">Sil</a>
+                        <a href="/Client/Basket/Delete/@p.ProductId/@ViewBag.id" class="btn btn-outline-danger m-2 btnSil" data-pId="@p.ProductId">Sil</a>
                     </div>
                 </div>
             </div>
@@ -45,7 +45,7 @@
         }
         else
         {
-            <a href="/Client/Payment/Index/@Convert.ToDouble(prices)" class="btn btn-outline-light m-2 btn-lg">Ödeme Yap @prices.ToString("0.00") &#8378;</a>
+            <a href="/Client/Payment/Index/@Convert.ToDouble(prices)/@ViewBag.id" class="btn btn-outline-light m-2 btn-lg">Ödeme Yap @prices.ToString("0.00") &#8378;</a>
         }
     </div>
 </div>

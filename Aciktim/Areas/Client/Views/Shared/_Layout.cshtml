@@ -30,9 +30,9 @@
                     <a href="/Client" class="nav-item nav-link text-white">
                         <i class="fa fa-tachometer-alt me-2"></i>Anasayfa
                     </a>
-                    <a href="/Client/Card/Index" class="nav-item nav-link text-white"><i class="fa fa-th me-2"></i>Kartlarım</a>
-                    <a href="/Client/Address/Index" class="nav-item nav-link text-white"><i class="fa fa-keyboard me-2"></i>Adreslerim</a>
-                    <a href="/Client/Order/Index" class="nav-item nav-link text-white"><i class="fa fa-table me-2"></i>Siparişlerim</a>
+                    <a href="/Client/Card/Index/@ViewBag.id" class="nav-item nav-link text-white"><i class="fa fa-th me-2"></i>Kartlarım</a>
+                    <a href="/Client/Address/Index/@ViewBag.id" class="nav-item nav-link text-white"><i class="fa fa-keyboard me-2"></i>Adreslerim</a>
+                    <a href="/Client/Order/Index/@ViewBag.id" class="nav-item nav-link text-white"><i class="fa fa-table me-2"></i>Siparişlerim</a>
                 </div>
             </nav>
         </div>
@@ -50,17 +50,17 @@
                 <div class="navbar-nav align-items-center ms-auto">
 
                     <div class="nav-item dropdown">
-                        <a href="/Client/Basket/Index" class="nav-link">
+                        <a href="/Client/Basket/Index/@ViewBag.id" class="nav-link">
                             <span class="d-none d-lg-inline-flex">Sepet</span>
                         </a>
                     </div>
 
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                            <span class="d-none d-lg-inline-flex">Kullanıcı Adı</span>
+                            <span class="d-none d-lg-inline-flex">@ViewBag.name</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
-                            <a href="/Client/MyAccount/Index" class="dropdown-item">
+                            <a href="/Client/MyAccount/Index/@ViewBag.id" class="dropdown-item">
                                 <div class="d-flex align-items-center">
                                     <div class="ms-2">
                                         <h6 class="fw-normal mb-0">Hesabım</h6>
@@ -68,7 +68,7 @@
                                 </div>
                             </a>
                             <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
+                            <a href="/Client/Home/LogOut" class="dropdown-item">
                                 <div class="d-flex align-items-center">
                                     <div class="ms-2">
                                         <h6 class="fw-normal mb-0">Çıkış Yap</h6>

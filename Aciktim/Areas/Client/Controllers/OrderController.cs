@@ -1,20 +1,24 @@
 ﻿using Aciktim.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Dynamic;
+using System.Security.Claims;
 
 namespace Aciktim.Areas.Client.Controllers
 {
+    [Authorize(Policy = "Client")]
     [Area("Client")]
     public class OrderController : Controller
     {
         AciktimContext _context = new AciktimContext();
-        public IActionResult Index()
+        public IActionResult Index(int id)
         {
-            dynamic myModel = new ExpandoObject();
-            myModel.Order = _context.Orders.Include(o => o.Restaurant).Where(o => o.ClientId == 1).ToList();
-            myModel.Address = _context.GetOrderFullAddress(1);
-            return View(myModel);
+            string name = User.FindFirstValue("UserName");
+            ViewBag.name = name;
+            ViewBag.id = id;
+            List<Order> orders = _context.Orders.Include(o => o.Restaurant).Where(o => o.ClientId == id).ToList();
+            return View(orders);
         }
     }
 }

@@ -16,7 +16,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="/Client/Card/Add" method="post" role="form">
+                    <form action="/Client/Card/Add/@ViewBag.id" method="post" role="form">
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" id="cardNumber" name="CardNumber" placeholder="xxxx xxxx xxxx xxxx" maxlength="16">
                             <label for="floatingInput">Kart Numarası</label>
@@ -29,7 +29,7 @@
                             <input type="text" class="form-control" id="cardNumber" placeholder="1111 2222 3333 4444" name="Cvv" maxlength="3">
                             <label for="floatingInput">CVV</label>
                         </div>
-                        <input hidden type="text" name="ClientId" value="1" />
+                        <input hidden type="text" name="ClientId" value="@ViewBag.id" />
                         <button type="submit" class="btn btn-sm btn-outline-success addCard">Ekle</button>
                         <button type="button" class="btn btn-sm btn-outline-danger m-2" data-bs-dismiss="modal">İptal</button>
                     </form>

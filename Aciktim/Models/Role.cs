@@ -16,5 +16,6 @@ namespace Aciktim.Models
 
         public virtual ICollection<Carrier> Carriers { get; set; }
         public virtual ICollection<Client> Clients { get; set; }
+        public virtual ICollection<Restaurant> Restaurants { get; set; }
     }
 }

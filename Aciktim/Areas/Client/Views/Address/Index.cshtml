@@ -17,43 +17,43 @@
                 </div>
                 <div class="modal-body">
 
-                    <form action="/Client/Address/Add" method="post" role="form">
+                    <form action="/Client/Address/Add/@ViewBag.id" method="post" role="form">
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="AddressName" placeholder="Evim" name="AddressName">
+                            <input type="text" class="form-control" id="AddressName" placeholder="Evim" name="AddressName" required>
                             <label for="AddressName">Adres Başlığı</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <select class="form-select form-select-sm mb-3" id="country" asp-items="@(new SelectList(@Model.Country,"CountryId","Name"))" aria-label="Floating label select example" name="CountryId">
+                            <select class="form-select form-select-sm mb-3" id="country" asp-items="@(new SelectList(@Model.Country,"CountryId","Name"))" aria-label="Floating label select example" name="CountryId" required>
                             </select>
                             <label for="country">Ülke</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <select class="form-select form-select-sm mb-3" id="city" asp-items="@(new SelectList(string.Empty,"CityId","Name"))" aria-label="Floating label select example" name="CityId">
+                            <select class="form-select form-select-sm mb-3" id="city" asp-items="@(new SelectList(string.Empty,"CityId","Name"))" aria-label="Floating label select example" name="CityId" required>
                             </select>
                             <label for="city">Şehir</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <select class="form-select form-select-sm mb-3" id="state" asp-items="@(new SelectList(string.Empty,"StateId","Name"))" aria-label="Floating label select example" name="StateId">
+                            <select class="form-select form-select-sm mb-3" id="state" asp-items="@(new SelectList(string.Empty,"StateId","Name"))" aria-label="Floating label select example" name="StateId" required>
                             </select>
                             <label for="state">İlçe</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <select class="form-select form-select-sm mb-3" id="neighbourhood" asp-items="@(new SelectList(string.Empty,"NeighbourhoodId","Name"))" aria-label="Floating label select example" name="NeighbourhoodId">
+                            <select class="form-select form-select-sm mb-3" id="neighbourhood" asp-items="@(new SelectList(string.Empty,"NeighbourhoodId","Name"))" aria-label="Floating label select example" name="NeighbourhoodId" required>
                             </select>
                             <label for="neighbourhood">Mahalle</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <select class="form-select form-select-sm mb-3" id="street" asp-items="@(new SelectList(string.Empty,"StreetId","Name"))" aria-label="Floating label select example" name="StreetId">
+                            <select class="form-select form-select-sm mb-3" id="street" asp-items="@(new SelectList(string.Empty,"StreetId","Name"))" aria-label="Floating label select example" name="StreetId" required>
                             </select>
                             <label for="street">Sokak</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <select class="form-select form-select-sm mb-3" id="apartment" asp-items="@(new SelectList(string.Empty,"ApartmentId","Name"))" aria-label="Floating label select example" name="ApartmentId">
+                            <select class="form-select form-select-sm mb-3" id="apartment" asp-items="@(new SelectList(string.Empty,"ApartmentId","Name"))" aria-label="Floating label select example" name="ApartmentId" required>
                             </select>
                             <label for="apartment">Apartman</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <select class="form-select form-select-sm mb-3" id="apartmentno" asp-items="@(new SelectList(string.Empty,"ApartmentNumberId","Name"))" aria-label="Floating label select example" name="ApartmentNumberId">
+                            <select class="form-select form-select-sm mb-3" id="apartmentno" asp-items="@(new SelectList(string.Empty,"ApartmentNumberId","Name"))" aria-label="Floating label select example" name="ApartmentNumberId" required>
                             </select>
                             <label for="apartmentno">Daire</label>
                         </div>
@@ -98,7 +98,7 @@
                         <td>@a.Street</td>
                         <td>@a.Apartment</td>
                         <td>@a.No</td>
-                        <td><a href="/Client/Address/Delete/@a.AddressId" class="btn btn-outline-danger">Sil</a></td>
+                        <td><a href="/Client/Address/Delete/@a.AddressId/@ViewBag.id" class="btn btn-outline-danger">Sil</a></td>
                     </tr>
                 }
 

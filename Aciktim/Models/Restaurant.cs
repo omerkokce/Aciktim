@@ -24,6 +24,7 @@ namespace Aciktim.Models
         public string RestaurantName { get; set; } = null!;
         public int? ImageId { get; set; }
 
+        public virtual Role Role { get; set; } = null!;
         public virtual Address Address { get; set; } = null!;
         public virtual Image? Image { get; set; }
         public virtual Manager Manager { get; set; } = null!;

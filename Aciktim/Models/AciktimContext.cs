@@ -616,15 +616,19 @@ namespace Aciktim.Models
                     .HasForeignKey(d => d.ManagerId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__Restauran__Manag__03F0984C");
+
+                entity.HasOne(d => d.Role)
+                    .WithMany(p => p.Restaurants)
+                    .HasForeignKey(d => d.RoleId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Restaurant__RoleId__19553746");
             });
 
             modelBuilder.Entity<Role>(entity =>
             {
                 entity.ToTable("Role");
 
-                entity.Property(e => e.RoleName)
-                    .HasMaxLength(30)
-                    .IsFixedLength();
+                entity.Property(e => e.RoleName).HasMaxLength(30);
             });
 
             modelBuilder.Entity<State>(entity =>

@@ -52,19 +52,19 @@
                             </a>
                             <h3>Giriş Yap</h3>
                         </div>
-                        <form action="/Home/Login" method="post" role="form" onsubmit="required()" id="form1">
+                        <form action="/Home/Login" method="post" role="form" id="form1">
                             <p class="text-warning">@ViewBag.message</p>
                             <div class="form-floating mb-3">
-                                <input type="email" class="form-control" id="floatingInput" placeholder="isim@örnek.com" name="Email">
+                                <input type="email" class="form-control" id="floatingInput" placeholder="isim@örnek.com" name="Email" required>
                                 <label for="floatingInput">Email adresi</label>
                             </div>
                             <div class="form-floating mb-4">
-                                <input type="password" class="form-control" id="floatingPassword" placeholder="Parola" name="Password">
+                                <input type="password" class="form-control" id="floatingPassword" placeholder="Parola" name="Password" required>
                                 <label for="floatingPassword">Parola</label>
                             </div>
                             <button type="submit" class="btn btn-primary py-3 w-100 mb-4 btnLogin">Giriş Yap</button>
                         </form>
-                        <p class="text-center mb-0">Hesabın yok mu? <a href="/SignUp">Kayıt Ol</a></p>
+                        <p class="text-center mb-0">Hesabın yok mu? <a href="/Home/SignUp">Kayıt Ol</a></p>
                     </div>
                 </div>
             </div>
@@ -88,20 +88,3 @@
 </body>
 
 </html>
-<script>
-    $(document).ready(function() {
-        $('.btnLogin').attr('disabled', true);
-        $('#floatingInput').keyup(function() {
-            if ($(this).val().length != 0 && $('#floatingPassword').val().length != 0)
-                $('.btnLogin').attr('disabled', false);
-            else
-                $('.btnLogin').attr('disabled', true);
-        });
-        $('#floatingPassword').keyup(function() {
-            if ($(this).val().length != 0 && $('#floatingInput').val().length != 0)
-                $('.btnLogin').attr('disabled', false);
-            else
-                $('.btnLogin').attr('disabled', true);
-        });
-    });
-</script>

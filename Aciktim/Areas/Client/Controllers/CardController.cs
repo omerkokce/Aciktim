@@ -1,17 +1,24 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Aciktim.Models;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace Aciktim.Areas.Client.Controllers
 {
+    [Authorize(Policy = "Client")]
     [Area("Client")]
     public class CardController : Controller
     {
         AciktimContext _context = new AciktimContext();
-        public IActionResult Index()
+        public IActionResult Index(int id)
         {
-            List<Card> cards = _context.Cards.Where(c => c.ClientId == 1).ToList();
+            string name = User.FindFirstValue("UserName");
+            ViewBag.name = name;
+            ViewBag.id = id;
+            List<Card> cards = _context.Cards.Where(c => c.ClientId == id).ToList();
             return View(cards);
         }
+
         [HttpPost]
         public IActionResult Add(Card c)
         {
@@ -19,26 +26,26 @@ namespace Aciktim.Areas.Client.Controllers
             {
                 _context.Cards.Add(c);
                 _context.SaveChanges();
+                return RedirectToAction("Index", new { id = c.ClientId });
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Home");
         }
-
-        public IActionResult Delete(int id)
+        [Route("/Client/Card/Delete/{cardId}")]
+        public IActionResult Delete(int cardId)
         {
-#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
-            Card c = _context.Cards.FirstOrDefault(c => c.CardId == id && c.ClientId == 1);
-#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
+            Card c = _context.Cards.FirstOrDefault(c => c.CardId == cardId);
             if (c != null)
             {
                 _context.Cards.Remove(c);
                 _context.SaveChanges();
+                return RedirectToAction("Index", new { id = c.ClientId });
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Home");
         }
     }
 }

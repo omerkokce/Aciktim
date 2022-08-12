@@ -26,42 +26,42 @@
 }
 <div class="col-sm col-xl pt-4 px-4">
     <div class="bg-secondary rounded h-100 p-4">
-        <form action="/Carrier/Address/Update" method="post" role="form">
+        <form action="/Restaurant/Address/Update" method="post" role="form">
             <div class="form-floating mb-3">
                 <label for="country">Ülke</label>
             </div>
             <div class="form-floating mb-3">
-                <select class="form-select form-select-sm mb-3" id="country" asp-items="@(new SelectList(@ViewBag.Country,"CountryId","Name",country.CountryId))" aria-label="Floating label select example" name="CountryId">
+                <select class="form-select form-select-sm mb-3" id="country" asp-items="@(new SelectList(@ViewBag.Country,"CountryId","Name",country.CountryId))" aria-label="Floating label select example" name="CountryId" required>
                 </select>
                 <label for="country">Ülke</label>
             </div>
             <div class="form-floating mb-3">
-                <select class="form-select form-select-sm mb-3" id="city" asp-items="@(new SelectList(@ViewBag.City,"CityId","Name",city.CityId))" aria-label="Floating label select example" name="CityId">
+                <select class="form-select form-select-sm mb-3" id="city" asp-items="@(new SelectList(@ViewBag.City,"CityId","Name",city.CityId))" aria-label="Floating label select example" name="CityId" required>
                 </select>
                 <label for="city">Şehir</label>
             </div>
             <div class="form-floating mb-3">
-                <select class="form-select form-select-sm mb-3" id="state" asp-items="@(new SelectList(@ViewBag.State,"StateId","Name",state.StateId))" aria-label="Floating label select example" name="StateId">
+                <select class="form-select form-select-sm mb-3" id="state" asp-items="@(new SelectList(@ViewBag.State,"StateId","Name",state.StateId))" aria-label="Floating label select example" name="StateId" required>
                 </select>
                 <label for="state">İlçe</label>
             </div>
             <div class="form-floating mb-3">
-                <select class="form-select form-select-sm mb-3" id="neighbourhood" asp-items="@(new SelectList(@ViewBag.Neighbourhood,"NeighbourhoodId","Name",neighbourhood.NeighbourhoodId))" aria-label="Floating label select example" name="NeighbourhoodId">
+                <select class="form-select form-select-sm mb-3" id="neighbourhood" asp-items="@(new SelectList(@ViewBag.Neighbourhood,"NeighbourhoodId","Name",neighbourhood.NeighbourhoodId))" aria-label="Floating label select example" name="NeighbourhoodId" required>
                 </select>
                 <label for="neighbourhood">Mahalle</label>
             </div>
             <div class="form-floating mb-3">
-                <select class="form-select form-select-sm mb-3" id="street" asp-items="@(new SelectList(@ViewBag.Street,"StreetId","Name",street.StreetId))" aria-label="Floating label select example" name="StreetId">
+                <select class="form-select form-select-sm mb-3" id="street" asp-items="@(new SelectList(@ViewBag.Street,"StreetId","Name",street.StreetId))" aria-label="Floating label select example" name="StreetId" required>
                 </select>
                 <label for="street">Sokak</label>
             </div>
             <div class="form-floating mb-3">
-                <select class="form-select form-select-sm mb-3" id="apartment" asp-items="@(new SelectList(@ViewBag.Apartment,"ApartmentId","Name",apartment.ApartmentId))" aria-label="Floating label select example" name="ApartmentId">
+                <select class="form-select form-select-sm mb-3" id="apartment" asp-items="@(new SelectList(@ViewBag.Apartment,"ApartmentId","Name",apartment.ApartmentId))" aria-label="Floating label select example" name="ApartmentId" required>
                 </select>
                 <label for="apartment">Apartman</label>
             </div>
             <div class="form-floating mb-3">
-                <select class="form-select form-select-sm mb-3" id="apartmentno" asp-items="@(new SelectList(@ViewBag.ApartmentNumber,"ApartmentNumberId","Name",apartmentNumber.ApartmentNumberId))" aria-label="Floating label select example" name="ApartmentNumberId">
+                <select class="form-select form-select-sm mb-3" id="apartmentno" asp-items="@(new SelectList(@ViewBag.ApartmentNumber,"ApartmentNumberId","Name",apartmentNumber.ApartmentNumberId))" aria-label="Floating label select example" name="ApartmentNumberId" required>
                 </select>
                 <label for="apartmentno">Daire</label>
             </div>
@@ -80,7 +80,7 @@
         //Cities
         $(document).ready(function() {
             $("#country").change(function() {
-                var url = '@Url.Content("~/")' + "Carrier/Address/GetCities";
+                var url = '@Url.Content("~/")' + "Restaurant/Address/GetCities";
                 var ddlsource = "#country";
                 $.getJSON(url, { id: $(ddlsource).val() }, function(data) {
                     var items = "";
@@ -95,7 +95,7 @@
         //States
         $(document).ready(function() {
             $("#city").change(function() {
-                var url = '@Url.Content("~/")' + "Carrier/Address/GetStates";
+                var url = '@Url.Content("~/")' + "Restaurant/Address/GetStates";
                 var ddlsource = "#city";
                 $.getJSON(url, { id: $(ddlsource).val() }, function(data) {
                     var items = "";
@@ -110,7 +110,7 @@
         //Neighbourhoods
         $(document).ready(function() {
             $("#state").change(function() {
-                var url = '@Url.Content("~/")' + "Carrier/Address/GetNeighbourhoods";
+                var url = '@Url.Content("~/")' + "Restaurant/Address/GetNeighbourhoods";
                 var ddlsource = "#state";
                 $.getJSON(url, { id: $(ddlsource).val() }, function(data) {
                     var items = "";
@@ -125,7 +125,7 @@
         //Streets
         $(document).ready(function() {
             $("#neighbourhood").change(function() {
-                var url = '@Url.Content("~/")' + "Carrier/Address/GetStreets";
+                var url = '@Url.Content("~/")' + "Restaurant/Address/GetStreets";
                 var ddlsource = "#neighbourhood";
                 $.getJSON(url, { id: $(ddlsource).val() }, function(data) {
                     var items = "";
@@ -140,7 +140,7 @@
         //Apartments
         $(document).ready(function() {
             $("#street").change(function() {
-                var url = '@Url.Content("~/")' + "Carrier/Address/GetApartments";
+                var url = '@Url.Content("~/")' + "Restaurant/Address/GetApartments";
                 var ddlsource = "#street";
                 $.getJSON(url, { id: $(ddlsource).val() }, function(data) {
                     var items = "";
@@ -155,7 +155,7 @@
         //Apartment Numbers
         $(document).ready(function() {
             $("#apartment").change(function() {
-                var url = '@Url.Content("~/")' + "Carrier/Address/GetApartmentNumbers";
+                var url = '@Url.Content("~/")' + "Restaurant/Address/GetApartmentNumbers";
                 var ddlsource = "#apartment";
                 $.getJSON(url, { id: $(ddlsource).val() }, function(data) {
                     var items = "";

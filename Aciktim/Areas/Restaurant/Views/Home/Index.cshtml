@@ -28,7 +28,7 @@
                                 @o.Client.ClientName
                             </td>
                             <td>
-                                @foreach (Product p in _context.GetProductFromOrder(2).ToList())
+                                @foreach (Product p in _context.GetProductFromOrder(o.OrderId).ToList())
                                 {
                                     <span>
                                         @p.ProductName &nbsp;
@@ -37,13 +37,15 @@
                                 }
                             </td>
                             <td>@price.ToString("0.00")</td>
+                            @{
+                                price = 0;
+                            }
                             <td>
                                 @o.Date
                             </td>
-                            <td><a href="#" class="btn btn-outline-success">Gönder</a></td>
+                            <td><a href="/Restaurant/Home/SendOrder/@o.OrderId" class="btn btn-outline-success">Gönder</a></td>
                         </tr>
                     }
-
                 }
             </tbody>
         </table>
@@ -72,21 +74,23 @@
                                 @o.Client.ClientName
                             </td>
                             <td>
-                                <span>
-                                    @foreach (Product p in _context.GetProductFromOrder(2).ToList())
-                                    {
-                                        @p.ProductName
-                                        price += p.Price;
-                                    }
-                                </span>
+                                @foreach (Product p in _context.GetProductFromOrder(o.OrderId).ToList())
+                                {
+                                    <span>
+                                        @p.ProductName &nbsp;
+                                    </span>
+                                    price += p.Price;
+                                }
                             </td>
                             <td>@price.ToString("0.00")</td>
+                            @{
+                                price = 0;
+                            }
                             <td>
                                 @o.Date
                             </td>
                         </tr>
                     }
-
                 }
             </tbody>
         </table>

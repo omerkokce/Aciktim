@@ -4,48 +4,55 @@
     Layout = "_Layout";
 }
 
-<div class="col-sm col-xl pt-4 px-4">
-    <div class="bg-secondary rounded h-100 p-4">
-        <h4>Adresler</h4>
-        <dl class="row mb-0">
-            @foreach (GetAddress a in Model.Address)
-            {
+<form action="/Client/Payment/Pay" method="post" role="form">
+    <div class="col-sm col-xl pt-4 px-4">
+        <div class="bg-secondary rounded h-100 p-4">
+            <h4>Adresler</h4>
+            <dl class="row mb-0">
+                @foreach (GetAddress a in Model.Address)
+                {
+                    <dt class="col-sm-4">
+                        <input hidden type="text" name="AddressId" value="@a.AddressId" />
+                        <input type="radio" class="btn-check" name="btnradioAddress" id="btnradio'@a.AddressId'" autocomplete="off" checked="" required>
+                        <label class="btn btn-outline-primary" for="btnradio'@a.AddressId'">@a.AddressName</label>
+                    </dt>
+                    <dd class="col-sm-8">
+                        <p>@a.Country @a.City @a.State @a.Neighbourhood mah. @a.Street sk. @a.Apartment apt No:@a.No</p>
+                    </dd>
+                    <hr class="dropdown-divider">
+                }
+            </dl>
+        </div>
+    </div>
+    <div class="col-sm col-xl pt-4 px-4">
+        <div class="bg-secondary rounded h-100 p-4">
+            <h4>Ödeme Yöntemi</h4>
+            <dl class="row mb-0">
                 <dt class="col-sm-4">
-                    <input type="radio" class="btn-check" name="btnradioAddress" id="btnradio'@a.AddressId'" autocomplete="off" checked="">
-                    <label class="btn btn-outline-primary" for="btnradio'@a.AddressId'">@a.AddressName</label>
+                    <input type="radio" class="btn-check" name="btnradioPayment" id="btnradiok" autocomplete="off" checked="">
+                    <label class="btn btn-outline-primary" for="btnradiok">Kapıda Ödeme</label>
                 </dt>
                 <dd class="col-sm-8">
-                    <p>@a.Country @a.City @a.State @a.Neighbourhood mah. @a.Street sk. @a.Apartment apt No:@a.No</p>
+                    <p>&emsp;</p>
                 </dd>
                 <hr class="dropdown-divider">
-            }
-        </dl>
+                @foreach (Card c in Model.Cards)
+                {
+                    <dt class="col-sm-4">
+                        <input type="radio" class="btn-check" name="btnradioPayment" id="btnradio'@c.CardId'" autocomplete="off" checked="">
+                        <label class="btn btn-outline-primary" for="btnradio'@c.CardId'">Kart</label>
+                    </dt>
+                    <dd class="col-sm-8">
+                        <p>@c.CardNumber</p>
+                    </dd>
+                    <hr class="dropdown-divider">
+                }
+            </dl>
+            <button type="submit" class="btn btn-sm btn-outline-success saveClient">Sipariş Ver @Model.Price.ToString("0.00")</button>
+        </div>
     </div>
-</div>
-<div class="col-sm col-xl pt-4 px-4">
-    <div class="bg-secondary rounded h-100 p-4">
-        <h4>Ödeme Yöntemi</h4>
-        <dl class="row mb-0">
-            <dt class="col-sm-4">
-                <input type="radio" class="btn-check" name="btnradioPayment" id="btnradiok" autocomplete="off" checked="">
-                <label class="btn btn-outline-primary" for="btnradiok">Kapıda Ödeme</label>
-            </dt>
-            <dd class="col-sm-8">
-                <p>&emsp;</p>
-            </dd>
-            <hr class="dropdown-divider">
-            @foreach (Card c in Model.Cards)
-            {
-                <dt class="col-sm-4">
-                    <input type="radio" class="btn-check" name="btnradioPayment" id="btnradio'@c.CardId'" autocomplete="off" checked="">
-                    <label class="btn btn-outline-primary" for="btnradio'@c.CardId'">Kart</label>
-                </dt>
-                <dd class="col-sm-8">
-                    <p>@c.CardNumber</p>
-                </dd>
-                <hr class="dropdown-divider">
-            }
-        </dl>
-        <a href="#" class="btn btn-outline-light m-2 btn-lg">Sipariş Ver @Model.Price.ToString("0.00") &#8378;</a>
-    </div>
-</div>
+    <input hidden type="text" name="RestaurantId" value="@ViewBag.RestaurantId" />
+    <input hidden type="text" name="ClientId" value="@ViewBag.id" />
+    <input hidden type="datetime" name="Date" value="@DateTime.Now" />
+    <input hidden type="text" name="IsActive" value="true" />
+</form>

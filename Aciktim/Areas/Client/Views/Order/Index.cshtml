@@ -1,5 +1,5 @@
 ﻿@using Aciktim.Models
-@model dynamic
+@model List<Order>
 @{
     Layout = "_Layout";
     AciktimContext _context = new AciktimContext();
@@ -19,7 +19,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (Order o in Model.Order)
+                @foreach (Order o in Model)
                 {
                     <tr>
                         <td>@o.Date</td>
