@@ -7,19 +7,23 @@
 }
 <div class="col-sm col-xl pt-4 px-4">
     <div class="bg-secondary rounded h-100 p-4">
-        <form action="/Restaurant/Menu/Update" method="post" role="form">
+        <form action="/Restaurant/Menu/Update" method="post" role="form" enctype="multipart/form-data">
             <input hidden type="text" name="MenuId" value="@Model.MenuId" />
             <input hidden type="text" name="RestaurantId" value="@Model.RestaurantId" />
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="Phone" name="Image" value="@Model.Image">
-                <label for="floatingInput">Ürün Resmi</label>
+            <input hidden type="text" name="ImageId" value="@Model.ImageId" />
+            <div>
+                <img class="img-fluid mx-auto mb-4" src="~/img/@Model.Image.ImageUrl" style="height: 100px;">
+            </div>
+            <div class="mb-3">
+                <label for="formFileLg">Resim dosyası seçiniz(opsiyonel)</label>
+                <input type="file" class="form-control bg-dark" id="formFileLg" name="ImageUrl">
             </div>
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="ClientName" name="MenuName" value="@Model.MenuName">
+                <input type="text" class="form-control" id="ClientName" name="MenuName" value="@Model.MenuName" required>
                 <label for="floatingInput">Ürün Adı</label>
             </div>
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="Phone" name="Price" value="@Model.Price">
+                <input type="text" class="form-control" id="Phone" name="Price" value="@Model.Price" required>
                 <label for="floatingInput">Ürün Ücreti</label>
             </div>
             <div class="form-floating mb-3">

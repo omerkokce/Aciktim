@@ -17,7 +17,7 @@ namespace Aciktim.Areas.Restaurant.Controllers
             string name = User.FindFirstValue("UserName");
             ViewBag.name = name;
             ViewBag.id = id;
-            List<Menu> menus = _context.Menus.Where(m => m.RestaurantId == id).ToList();
+            List<Menu> menus = _context.Menus.Include(x => x.Image).Where(m => m.RestaurantId == id).ToList();
             
             ViewBag.Product = PopulateProduct(id);
             return View(menus);
@@ -35,7 +35,7 @@ namespace Aciktim.Areas.Restaurant.Controllers
             {
                 _context.Menus.Remove(menu);
                 _context.SaveChanges();
-                return RedirectToAction("Index", new { menu.RestaurantId });
+                return RedirectToAction("Index", new { id = menu.RestaurantId });
             }
 
             return RedirectToAction("Index", "Home");
@@ -44,7 +44,7 @@ namespace Aciktim.Areas.Restaurant.Controllers
         [HttpGet]
         public IActionResult Update(int id)
         {
-            Menu menu = _context.Menus.FirstOrDefault(x => x.MenuId == id);
+            Menu menu = _context.Menus.Include(x => x.Image).FirstOrDefault(x => x.MenuId == id);
             List<ProductMenu> pm = _context.ProductMenus.Where(a => a.MenuId == id).ToList();
             List<int> pId = new List<int>();
             ViewBag.Product = PopulateProduct(menu.RestaurantId);
@@ -60,8 +60,39 @@ namespace Aciktim.Areas.Restaurant.Controllers
             return RedirectToAction("Index", "Home");
         }
         [HttpPost]
-        public IActionResult Update(Menu menu, string[] product)
+        public IActionResult Update(Menu menu, string[] product, AddImage image)
         {
+            if (image.ImageUrl != null)
+            {
+                Image i = _context.Images.FirstOrDefault(i => i.ImageId == menu.ImageId);
+
+                if (i.ImageId == 1)
+                {
+                    i = new Image();
+                }
+
+                string name = image.ImageUrl.FileName.Split(".")[0];
+                i.FileName = name;
+
+                var extension = Path.GetExtension(image.ImageUrl.FileName);
+                var newImageName = Guid.NewGuid() + extension;
+                var location = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img/", newImageName);
+                var stream = new FileStream(location, FileMode.Create);
+                image.ImageUrl.CopyTo(stream);
+                i.ImageUrl = newImageName;
+
+                if (i.ImageId == 0)
+                {
+                    _context.Images.Add(i);
+                    _context.SaveChanges();
+                    menu.ImageId = i.ImageId;
+                }
+                else
+                {
+                    _context.Images.Update(i);
+                }
+            }
+
             if (menu != null)
             {
                 _context.Menus.Update(menu);
@@ -83,8 +114,30 @@ namespace Aciktim.Areas.Restaurant.Controllers
             return RedirectToAction("Index");
         }
         [HttpPost]
-        public IActionResult Add(Menu menu, string[] product)
+        public IActionResult Add(Menu menu, string[] product, AddImage image)
         {
+            Image i = new Image();
+            if (image.ImageUrl != null)
+            {
+                string name = image.ImageUrl.FileName.Split(".")[0];
+                i.FileName = name;
+
+                var extension = Path.GetExtension(image.ImageUrl.FileName);
+                var newImageName = Guid.NewGuid() + extension;
+                var location = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img/", newImageName);
+                var stream = new FileStream(location, FileMode.Create);
+                image.ImageUrl.CopyTo(stream);
+                i.ImageUrl = newImageName;
+
+                _context.Images.Add(i);
+                _context.SaveChanges();
+                menu.ImageId = i.ImageId;
+            }
+            else
+            {
+                menu.ImageId = 1;
+            }
+
             try
             {
                 _context.Menus.Add(menu);

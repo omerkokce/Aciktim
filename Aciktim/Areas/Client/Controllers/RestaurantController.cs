@@ -19,9 +19,11 @@ namespace Aciktim.Areas.Client.Controllers
             ViewBag.name = name;
             ViewBag.id = clientId;
             dynamic myModel = new ExpandoObject();
-            myModel.Product = _context.Products.Where(p => p.RestaurantId == id).ToList();
+
+            myModel.Product = _context.Products.Include(x => x.Image).Where(p => p.RestaurantId == id).ToList();
+            myModel.Menu = _context.Menus.Include(x => x.Image).Where(m => m.RestaurantId == id).ToList();
             myModel.Comment = _context.Comments.Where(c => c.RestaurantId == id).Include(c => c.Client).ToList();
-            myModel.Restaurant = _context.Restaurants.Where(r => r.RestaurantId == id).FirstOrDefault();
+            myModel.Restaurant = _context.Restaurants.Include(x => x.Image).Where(r => r.RestaurantId == id).FirstOrDefault();
             myModel.Address = _context.GetRestaurantFullAddress(id).ToList();
             return View(myModel);
         }
@@ -32,7 +34,8 @@ namespace Aciktim.Areas.Client.Controllers
             Product p = _context.Products.FirstOrDefault(p => p.ProductId == id);
             Models.Client c = _context.Clients.FirstOrDefault(c => c.ClientId == clientId);
             List<Product> products = _context.GetBasketProduct(clientId).ToList();
-            if (products.Count != 0 && products[0].RestaurantId != id)
+            List<Menu> menuList = _context.GetBasketMenu(clientId).ToList();
+            if ((products.Count != 0 && products[0].RestaurantId != p.RestaurantId) || (menuList.Count != 0 && menuList[0].RestaurantId != p.RestaurantId))
             {
                 return "fail";
             }
@@ -40,6 +43,27 @@ namespace Aciktim.Areas.Client.Controllers
             if (p != null && c != null)
             {
                 _context.BasketProducts.Add(new BasketProduct { Product = p, Client = c });
+                _context.SaveChanges();
+                return "success";
+            }
+            return "fail";
+        }
+
+        [Route("/Client/Restaurant/AddMenu/{id}/{clientId}")]
+        public string AddMenu(int id, int clientId)
+        {
+            Menu m = _context.Menus.FirstOrDefault(m => m.MenuId == id);
+            Models.Client c = _context.Clients.FirstOrDefault(c => c.ClientId == clientId);
+            List<Product> products = _context.GetBasketProduct(clientId).ToList();
+            List<Menu> menuList = _context.GetBasketMenu(clientId).ToList();
+            if ((products.Count != 0 && products[0].RestaurantId != m.RestaurantId) || (menuList.Count != 0 && menuList[0].RestaurantId != m.RestaurantId))
+            {
+                return "fail";
+            }
+
+            if (m != null && c != null)
+            {
+                _context.BasketMenus.Add(new BasketMenu { Menu = m, Client = c });
                 _context.SaveChanges();
                 return "success";
             }

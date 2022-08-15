@@ -14,7 +14,7 @@ namespace Aciktim.Models
 
         public int ImageId { get; set; }
         public string FileName { get; set; } = null!;
-        public byte[] Data { get; set; } = null!;
+        public string ImageUrl { get; set; } = null!;
 
         public virtual ICollection<Menu> Menus { get; set; }
         public virtual ICollection<Product> Products { get; set; }

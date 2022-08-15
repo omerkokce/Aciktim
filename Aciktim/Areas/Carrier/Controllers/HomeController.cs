@@ -21,6 +21,7 @@ namespace Aciktim.Areas.Carrier.Controllers
             ViewBag.id = id;
 
             List<Models.Restaurant> restaurants = _context.Restaurants.ToList();
+            ViewBag.Restaurant = _context.GetCarrierRestaurant(id).ToList();
             return View(restaurants);
         }
 

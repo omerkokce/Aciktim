@@ -2,6 +2,7 @@
 @model dynamic
 @{
     Layout = "_Layout";
+    AciktimContext _context = new AciktimContext();
 }
 
 <div class="position-fixed top-0 end-0 p-3" style="z-index: 1021">
@@ -30,20 +31,14 @@
         </ul>
         <div class="tab-content" id="pills-tabContent">
             <div class="tab-pane fade active show" id="pills-menu" role="tabpanel" aria-labelledby="pills-menu-tab">
+                <h5>Ürünler</h5>
                 @foreach (Product p in Model.Product)
                 {
                     <div class="col-sm col-xl">
                         <h6 class="mb-4 mt-4">@p.ProductName</h6>
                         <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
                             <div class="btn-group" role="group">
-                                @if (p.Image == null)
-                                {
-                                    <img class="img-fluid mx-auto mb-4" src="~/img/default.jpg" style="height: 100px;">
-                                }
-                                else
-                                {
-                                    <span>@p.Image</span>
-                                }
+                                <img class="img-fluid mx-auto mb-4" src="~/img/@p.Image.ImageUrl" style="height: 100px;">
                             </div>
                             <div class="btn-group" role="group">
                                 <span>@p.Content</span>
@@ -51,6 +46,30 @@
                             <div class="ms-3">
                                 <p class="mb-2">@p.Price.ToString("0.00") &#8378;</p>
                                 <a href="#" class="btn btn-outline-info m-2 btnEkle" data-pId="@p.ProductId" data-pName="@p.ProductName" data-cId="@ViewBag.id">Ekle</a>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="dropdown-divider">
+                }
+                <div class="mb-4 mt-4 row"></div>
+                <h5>Menüler</h5>
+                @foreach (Menu m in Model.Menu)
+                {
+                    <div class="col-sm col-xl">
+                        <h6 class="mb-4 mt-4">@m.MenuName</h6>
+                        <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+                            <div class="btn-group" role="group">
+                                <img class="img-fluid mx-auto mb-4" src="~/img/@m.Image.ImageUrl" style="height: 100px;">
+                            </div>
+                            <div class="btn-group" role="group">
+                                @foreach (Product item in _context.GetProductFromMenu(m.MenuId))
+                                {
+                                <span>@item.ProductName &nbsp;</span>
+                                }
+                            </div>
+                            <div class="ms-3">
+                                <p class="mb-2">@m.Price.ToString("0.00") &#8378;</p>
+                                <a href="#" class="btn btn-outline-info m-2 btnMenuEkle" data-mId="@m.MenuId" data-mName="@m.MenuName" data-cmId="@ViewBag.id">Ekle</a>
                             </div>
                         </div>
                     </div>
@@ -97,6 +116,35 @@
             $.ajax({
                 type: "POST",
                 url: "/Client/Restaurant/Add/" + id + "/" + cId,
+                success: function(durum) {
+                    if (durum == "success") {
+                        $(".toast-body").html(name + " sepete eklendi.");
+                        var toastElList = [].slice.call(document.querySelectorAll('.toast'))
+                        var toastList = toastElList.map(function(toastEl) {
+                            return new bootstrap.Toast(toastEl)
+                        })
+                        toastList.forEach(toast => toast.show())
+                    }
+                    else {
+                        $(".toast-body").html("Ürün eklenemedi. Sepetinizde başka restorantın ürünü var.");
+                        var toastElList = [].slice.call(document.querySelectorAll('.toast'))
+                        var toastList = toastElList.map(function(toastEl) {
+                            return new bootstrap.Toast(toastEl)
+                        })
+                        toastList.forEach(toast => toast.show())
+                    }
+                },
+                error: function() {
+                }
+            });
+        });
+        $(".btnMenuEkle").click(function() {
+            var id = $(this).attr("data-mId");
+            var name = $(this).attr("data-mName");
+            var cId = $(this).attr("data-cmId");
+            $.ajax({
+                type: "POST",
+                url: "/Client/Restaurant/AddMenu/" + id + "/" + cId,
                 success: function(durum) {
                     if (durum == "success") {
                         $(".toast-body").html(name + " sepete eklendi.");

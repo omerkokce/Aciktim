@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Aciktim.Models
 {
@@ -22,8 +23,8 @@ namespace Aciktim.Models
         public int? ImageId { get; set; }
 
         public virtual Discount? Discount { get; set; }
-        public virtual Image? Image { get; set; }
         public virtual Restaurant Restaurant { get; set; } = null!;
+        public virtual Image? Image { get; set; }
         public virtual ICollection<BasketProduct> BasketProducts { get; set; }
         public virtual ICollection<OrderProduct> OrderProducts { get; set; }
         public virtual ICollection<ProductCategory> ProductCategories { get; set; }

@@ -19,5 +19,7 @@ namespace Aciktim.Models
         public virtual Image? Image { get; set; }
         public virtual Restaurant Restaurant { get; set; } = null!;
         public virtual ICollection<ProductMenu> ProductMenus { get; set; }
+        public virtual ICollection<BasketMenu> BasketMenus { get; set; }
+        public virtual ICollection<OrderMenu> OrderMenus { get; set; }
     }
 }

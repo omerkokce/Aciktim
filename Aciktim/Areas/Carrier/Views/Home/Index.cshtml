@@ -14,6 +14,7 @@
                     <th scope="col">Telefonu</th>
                     <th scope="col">E-Maili</th>
                     <th scope="col">Adresi</th>
+                    <th scope="col">Anlaşmalı mı?</th>
                 </tr>
             </thead>
             <tbody>
@@ -27,6 +28,16 @@
                             @foreach (GetAddress a in _context.GetRestaurantFullAddress(r.RestaurantId))
                             {
                                 <p>Restorant adresi: <ins>@a.Country @a.City @a.State @a.Neighbourhood mah. @a.Street sk. @a.Apartment apt No:@a.No</ins></p>
+                            }
+                        </td>
+                        <td>
+                            @if (ViewBag.Restaurant.Contains(r))
+                            {
+                                <span class="text-success">Anlaşmalı</span>
+                            }
+                            else
+                            {
+                                <span class="text-danger">Anlaşma yok</span>
                             }
                         </td>
                     </tr>

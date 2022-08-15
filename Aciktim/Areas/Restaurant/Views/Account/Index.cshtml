@@ -5,10 +5,13 @@
 }
 <div class="col-sm col-xl pt-4 px-4">
     <div class="bg-secondary rounded h-100 p-4">
-        <form action="/Restaurant/Account/Update" method="post" role="form">
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="Image" name="Image" value="@Model.Image">
-                <label for="floatingInput">Restorant Resmi</label>
+        <form action="/Restaurant/Account/Update" method="post" role="form" enctype="multipart/form-data">
+            <div>
+                <img class="img-fluid mx-auto mb-4" src="~/img/@Model.Image.ImageUrl" style="height: 100px;">
+            </div>
+            <div class="mb-3">
+                <label for="formFileLg">Resim dosyası seçiniz(opsiyonel)</label>
+                <input type="file" class="form-control bg-dark" id="formFileLg" name="ImageUrl">
             </div>
             <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="RestaurantName" name="RestaurantName" value="@Model.RestaurantName">
@@ -27,6 +30,7 @@
             <input hidden type="text" name="Password" value="@Model.Password" />
             <input hidden type="text" name="ManagerId" value="@Model.ManagerId" />
             <input hidden type="text" name="AddressId" value="@Model.AddressId" />
+            <input hidden type="text" name="ImageId" value="@Model.ImageId" />
             <button type="submit" class="btn btn-sm btn-outline-success saveRestaurant">Kaydet</button>
         </form>
     </div>

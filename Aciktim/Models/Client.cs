@@ -24,6 +24,7 @@ namespace Aciktim.Models
 
         public virtual Role Role { get; set; } = null!;
         public virtual ICollection<BasketProduct> Baskets { get; set; }
+        public virtual ICollection<BasketMenu> CBasketMenus { get; set; }
         public virtual ICollection<Card> Cards { get; set; }
         public virtual ICollection<ClientAddress> ClientAddresses { get; set; }
         public virtual ICollection<ClientFavorite> ClientFavorites { get; set; }

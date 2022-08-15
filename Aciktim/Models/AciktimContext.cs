@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Aciktim.Models
@@ -21,6 +21,7 @@ namespace Aciktim.Models
         public virtual DbSet<Apartment> Apartments { get; set; } = null!;
         public virtual DbSet<ApartmentNumber> ApartmentNumbers { get; set; } = null!;
         public virtual DbSet<BasketProduct> BasketProducts { get; set; } = null!;
+        public virtual DbSet<BasketMenu> BasketMenus { get; set; } = null!;
         public virtual DbSet<Card> Cards { get; set; } = null!;
         public virtual DbSet<Carrier> Carriers { get; set; } = null!;
         public virtual DbSet<CarrierRestaurant> CarrierRestaurants { get; set; } = null!;
@@ -38,6 +39,7 @@ namespace Aciktim.Models
         public virtual DbSet<Neighbourhood> Neighbourhoods { get; set; } = null!;
         public virtual DbSet<Order> Orders { get; set; } = null!;
         public virtual DbSet<OrderProduct> OrderProducts { get; set; } = null!;
+        public virtual DbSet<OrderMenu> OrderMenus { get; set; } = null!;
         public virtual DbSet<Product> Products { get; set; } = null!;
         public virtual DbSet<ProductCategory> ProductCategories { get; set; } = null!;
         public virtual DbSet<ProductMenu> ProductMenus { get; set; } = null!;
@@ -45,9 +47,9 @@ namespace Aciktim.Models
         public virtual DbSet<Role> Roles { get; set; } = null!;
         public virtual DbSet<State> States { get; set; } = null!;
         public virtual DbSet<Street> Streets { get; set; } = null!;
-        public virtual DbSet<GetAddress> FullAddress { get; set; }
-        public virtual DbSet<OrderPrice> OrderPrices { get; set; }
-        public virtual DbSet<LoginModel> LoginModels { get; set; }
+        public virtual DbSet<GetAddress> FullAddress { get; set; } = null!;
+        public virtual DbSet<OrderPrice> OrderPrices { get; set; } = null!;
+        public virtual DbSet<LoginModel> LoginModels { get; set; } = null!;
 
         public IQueryable<GetAddress> GetRestaurantFullAddress(int id)
         {
@@ -64,6 +66,11 @@ namespace Aciktim.Models
             SqlParameter pId = new SqlParameter("@id", id);
             return FullAddress.FromSqlRaw("EXECUTE GetOrderAddress @id", pId);
         }
+        public IQueryable<GetAddress> GetCarrierAddress(int id)
+        {
+            SqlParameter pId = new SqlParameter("@id", id);
+            return FullAddress.FromSqlRaw("EXECUTE GetCarrierAddress @id", pId);
+        }
         public IQueryable<OrderPrice> GetPriceOrder(int id)
         {
             SqlParameter pId = new SqlParameter("@id", id);
@@ -73,6 +80,11 @@ namespace Aciktim.Models
         {
             SqlParameter pId = new SqlParameter("@id", id);
             return Products.FromSqlRaw("EXECUTE GetBasketProduct @id", pId);
+        }
+        public IQueryable<Menu> GetBasketMenu(int id)
+        {
+            SqlParameter pId = new SqlParameter("@id", id);
+            return Menus.FromSqlRaw("EXECUTE GetBasketMenu @id", pId);
         }
         public IQueryable<Category> GetCategoryName(int id)
         {
@@ -89,15 +101,25 @@ namespace Aciktim.Models
             SqlParameter pId = new SqlParameter("@id", id);
             return Products.FromSqlRaw("EXECUTE GetProductFromMenu @id", pId);
         }
+        public IQueryable<Menu> GetMenuFromOrder(int id)
+        {
+            SqlParameter pId = new SqlParameter("@id", id);
+            return Menus.FromSqlRaw("EXECUTE GetMenuFromOrder @id", pId);
+        }
         public IQueryable<Carrier> GetRestaurantCarrier(int id)
         {
             SqlParameter pId = new SqlParameter("@id", id);
             return Carriers.FromSqlRaw("EXECUTE GetRestaurantCarrier @id", pId);
         }
-        public IQueryable<GetAddress> GetCarrierAddress(int id)
+        public IQueryable<Restaurant> GetCarrierRestaurant(int id)
         {
             SqlParameter pId = new SqlParameter("@id", id);
-            return FullAddress.FromSqlRaw("EXECUTE GetCarrierAddress @id", pId);
+            return Restaurants.FromSqlRaw("EXECUTE GetCarrierRestaurant @id", pId);
+        }
+        public IQueryable<Restaurant> GetFavoriteRestaurant(int id)
+        {
+            SqlParameter pId = new SqlParameter("@id", id);
+            return Restaurants.FromSqlRaw("EXECUTE GetFavoriteRestaurant @id", pId);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -206,6 +228,28 @@ namespace Aciktim.Models
                     .HasForeignKey(d => d.ProductId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__BasketPro__Produ__17F790F9");
+            });
+
+            modelBuilder.Entity<BasketMenu>(entity =>
+            {
+                entity.HasKey(e => e.Bmid)
+                    .HasName("PK__tmp_ms_x__3876B6ACED565249");
+
+                entity.ToTable("BasketMenu");
+
+                entity.Property(e => e.Bmid).HasColumnName("BMId");
+
+                entity.HasOne(d => d.Client)
+                    .WithMany(p => p.CBasketMenus)
+                    .HasForeignKey(d => d.ClientId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__BasketMen__Baske__17036CC0");
+
+                entity.HasOne(d => d.Menu)
+                    .WithMany(p => p.BasketMenus)
+                    .HasForeignKey(d => d.MenuId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__BasketMen__Menu__17F7906F9");
             });
 
             modelBuilder.Entity<Card>(entity =>
@@ -426,6 +470,8 @@ namespace Aciktim.Models
                 entity.ToTable("Image");
 
                 entity.Property(e => e.FileName).HasMaxLength(100);
+
+                entity.Property(e => e.ImageUrl).HasMaxLength(100);
             });
 
             modelBuilder.Entity<Manager>(entity =>
@@ -515,6 +561,28 @@ namespace Aciktim.Models
                     .HasConstraintName("FK__OrderProd__Produ__7D439ABD");
             });
 
+            modelBuilder.Entity<OrderMenu>(entity =>
+            {
+                entity.HasKey(e => e.Omid)
+                    .HasName("PK__OrderMen__AE2CBEFEB17174C9");
+
+                entity.ToTable("OrderMenu");
+
+                entity.Property(e => e.Omid).HasColumnName("OMId");
+
+                entity.HasOne(d => d.Order)
+                    .WithMany(p => p.OrderMenus)
+                    .HasForeignKey(d => d.OrderId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__OrderMenu__Order__7C4F7684");
+
+                entity.HasOne(d => d.Menu)
+                    .WithMany(p => p.OrderMenus)
+                    .HasForeignKey(d => d.MenuId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__OrderProd__Produ__79439681");
+            });
+
             modelBuilder.Entity<Product>(entity =>
             {
                 entity.ToTable("Product");
@@ -533,7 +601,7 @@ namespace Aciktim.Models
                 entity.HasOne(d => d.Image)
                     .WithMany(p => p.Products)
                     .HasForeignKey(d => d.ImageId)
-                    .HasConstraintName("FK__Product__ImageId__2A164134");
+                    .HasConstraintName("FK__Product__Image__59438679AF");
 
                 entity.HasOne(d => d.Restaurant)
                     .WithMany(p => p.Products)
@@ -656,6 +724,7 @@ namespace Aciktim.Models
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__Street__Neighbou__05D8E0BE");
             });
+
             modelBuilder.Entity<LoginModel>(entity =>
                 entity.HasNoKey()
             );

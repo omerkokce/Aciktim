@@ -21,5 +21,6 @@ namespace Aciktim.Models
         public virtual Client Client { get; set; } = null!;
         public virtual Restaurant Restaurant { get; set; } = null!;
         public virtual ICollection<OrderProduct> OrderProducts { get; set; }
+        public virtual ICollection<OrderMenu> OrderMenus { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿@using Aciktim.Models
+@using Microsoft.AspNetCore.Mvc;
 @model List<Carrier>
 @{
     Layout = "_Layout";
@@ -14,6 +15,7 @@
                     <th scope="col">Telefonu</th>
                     <th scope="col">E-mail'i</th>
                     <th scope="col">Adresi</th>
+                    <th scope="col">Anlaşmalı mı?</th>
                 </tr>
             </thead>
             <tbody>
@@ -29,9 +31,52 @@
                                 <p>Kurye adresi: <ins>@a.Country @a.City @a.State @a.Neighbourhood mah. @a.Street sk. @a.Apartment apt No:@a.No</ins></p>
                             }
                         </td>
+                        <td>
+                            @if (ViewBag.Carrier.Contains(c))
+                            {
+                                <span class="text-success">Anlaşmalı</span>
+                            }
+                            else
+                            {
+                                <span class="text-danger">Anlaşma yok</span>
+                            }
+                        </td>
                     </tr>
                 }
             </tbody>
         </table>
     </div>
 </div>
+@section Scripts{
+    <script>
+        $(".btnAnlasma").click(function() {
+            var id = $(this).attr("data-pId");
+            var name = $(this).attr("data-pName");
+            var cId = $(this).attr("data-cId");
+            $.ajax({
+                type: "POST",
+                url: "/Restaurant/Carrier/Add/" + id + "/" + cId,
+                success: function(durum) {
+                    if (durum == "success") {
+                        $(".toast-body").html(name + " sepete eklendi.");
+                        var toastElList = [].slice.call(document.querySelectorAll('.toast'))
+                        var toastList = toastElList.map(function(toastEl) {
+                            return new bootstrap.Toast(toastEl)
+                        })
+                        toastList.forEach(toast => toast.show())
+                    }
+                    else {
+                        $(".toast-body").html("Ürün eklenemedi. Sepetinizde başka restorantın ürünü var.");
+                        var toastElList = [].slice.call(document.querySelectorAll('.toast'))
+                        var toastList = toastElList.map(function(toastEl) {
+                            return new bootstrap.Toast(toastEl)
+                        })
+                        toastList.forEach(toast => toast.show())
+                    }
+                },
+                error: function() {
+                }
+            });
+        });
+    </script>
+}

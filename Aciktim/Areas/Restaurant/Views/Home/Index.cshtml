@@ -35,6 +35,13 @@
                                     </span>
                                     price += p.Price;
                                 }
+                                @foreach (Menu p in _context.GetMenuFromOrder(o.OrderId).ToList())
+                                {
+                                    <span>
+                                        @p.MenuName &nbsp;
+                                    </span>
+                                    price += p.Price;
+                                }
                             </td>
                             <td>@price.ToString("0.00")</td>
                             @{
@@ -78,6 +85,13 @@
                                 {
                                     <span>
                                         @p.ProductName &nbsp;
+                                    </span>
+                                    price += p.Price;
+                                }
+                                @foreach (Menu p in _context.GetMenuFromOrder(o.OrderId).ToList())
+                                {
+                                    <span>
+                                        @p.MenuName &nbsp;
                                     </span>
                                     price += p.Price;
                                 }

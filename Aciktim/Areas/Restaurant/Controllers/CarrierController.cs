@@ -15,8 +15,22 @@ namespace Aciktim.Areas.Restaurant.Controllers
             string name = User.FindFirstValue("UserName");
             ViewBag.name = name;
             ViewBag.id = id;
-            List<Models.Carrier> list = _context.GetRestaurantCarrier(id).ToList();
+            List<Models.Carrier> list = _context.Carriers.ToList();
+            ViewBag.Carrier = _context.GetRestaurantCarrier(id).ToList();
             return View(list);
+        }
+
+        public string Agreement(int id)
+        {
+            Models.Carrier c = _context.Carriers.FirstOrDefault(x => x.CarrierId == id);
+            
+            if (c != null)
+            {
+                
+                _context.SaveChanges();
+                return "success";
+            }
+            return "fail";
         }
     }
 }

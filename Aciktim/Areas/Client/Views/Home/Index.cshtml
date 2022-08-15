@@ -13,17 +13,23 @@
                 {
                     <a href="/Client/Restaurant/Index/@r.RestaurantId/@ViewBag.id">
                         <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
-                            @if (r.Image == null)
-                            {
-                                <div class="col-sm-4"><img class="img-fluid mx-auto mb-4" src="~/img/default.jpg" style="height: 100px;"></div>
-                            }
-                            else
-                            {
-                                <div class="col-sm-4">@r.Image</div>
-                            }
+                            <div class="col-sm-4">
+                                <img class="img-fluid mx-auto mb-4" src="~/img/@r.Image.ImageUrl" style="height: 100px;">
+                            </div>
                             <span class="col-sm-4">@r.RestaurantName</span>
                         </div>
                     </a>
+                    <div class="col-sm-4">
+                        @if (ViewBag.Restaurant.Contains(r))
+                        {
+                            <span class="col-sm-4">Favori Restorant</span>
+                            <a href="/Client/Home/DeleteFavorite/@r.RestaurantId/@ViewBag.id" class="btn btn-sm btn-sm-square btn-outline-primary">X</a>
+                        }
+                        else
+                        {
+                            <a href="/Client/Home/AddFavorite/@r.RestaurantId/@ViewBag.id" class="btn btn-sm btn-sm-square btn-outline-info">+</a>
+                        }
+                    </div>
                     <hr class="dropdown-divider">
                 }
             </div>

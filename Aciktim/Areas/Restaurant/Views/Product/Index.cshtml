@@ -16,17 +16,17 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="/Restaurant/Product/Add" method="post" role="form">
-                        <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="cardNumber" name="ImageId" placeholder="" maxlength="16">
-                            <label for="floatingInput">Resim</label>
+                    <form action="/Restaurant/Product/Add" method="post" role="form" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="formFileLg">Resim dosyası seçiniz(opsiyonel)</label>
+                            <input type="file" class="form-control bg-dark" id="formFileLg" name="ImageUrl">
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" placeholder="Pizza" name="ProductName" />
+                            <input type="text" class="form-control" placeholder="Pizza" name="ProductName" required />
                             <label for="floatingInput">İsim</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="content" placeholder="sucuk, mozarella, özel sos" name="Content">
+                            <input type="text" class="form-control" id="content" placeholder="sucuk, mozarella, özel sos" name="Content" required>
                             <label for="floatingInput">İçerik</label>
                         </div>
                         <div class="form-floating mb-3">
@@ -42,7 +42,7 @@
                             }
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="number" class="form-control" id="Price" placeholder="49.99" name="Price" min="0.00" step="0.01">
+                            <input type="number" class="form-control" id="Price" placeholder="49.99" name="Price" min="0.00" step="0.01" required>
                             <label for="floatingInput" id="lblPrice">Fiyat</label>
                         </div>
                         <input hidden type="text" name="RestaurantId" value="@ViewBag.id" />
@@ -82,17 +82,9 @@
                 <tbody>
                     @foreach (Product p in ViewBag.Products)
                 {
-
                     <tr>
                         <td>
-                            @if (p.Image == null)
-                            {
-                                <img class="img-fluid mx-auto mb-4" src="~/img/default.jpg" style="height: 100px;">
-                            }
-                            else
-                            {
-                                <span>@p.Image</span>
-                            }
+                            <img class="img-fluid mx-auto mb-4" src="~/img/@p.Image.ImageUrl" style="height: 100px;">
                         </td>
                         <td>@p.ProductName</td>
                         <td>@p.Content</td>
